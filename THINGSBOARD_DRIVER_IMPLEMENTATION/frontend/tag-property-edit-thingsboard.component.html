@@ -1,0 +1,112 @@
+<!-- ThingsBoard Tag Property Editor Template -->
+<div class="tb-tag-editor">
+    <!-- Header -->
+    <div class="header">
+        <h3>ThingsBoard Device & Telemetry Selection</h3>
+        <button mat-icon-button (click)="onRefresh()" [disabled]="loading">
+            <mat-icon>refresh</mat-icon>
+        </button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+    </div>
+
+    <!-- Device Selection -->
+    <div *ngIf="!loading && !error" class="device-selection">
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Select ThingsBoard Device</mat-label>
+            <mat-select [(value)]="selectedDevice" (selectionChange)="onDeviceSelected($event.value)">
+                <mat-option *ngFor="let device of devices" [value]="device">
+                    {{ getDeviceDisplayName(device) }}
+                </mat-option>
+            </mat-select>
+            <mat-hint>Choose a device to view its telemetry keys</mat-hint>
+        </mat-form-field>
+    </div>
+
+    <!-- Telemetry Keys Table -->
+    <div *ngIf="selectedDevice && telemetryKeys.length > 0" class="telemetry-table">
+        <h4>Available Telemetry Keys</h4>
+        
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+            
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+
+            <!-- Type Column -->
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-select [(value)]="element.type" style="width: 100px;">
+                        <mat-option *ngFor="let type of tagTypes" [value]="type">
+                            {{ type }}
+                        </mat-option>
+                    </mat-select>
+                </td>
+            </ng-container>
+
+            <!-- Address Column -->
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let element">
+                    <code>{{ element.address }}</code>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                (click)="onRowClicked(row)"
+                [class.selected]="selection.isSelected(row)">
+            </tr>
+        </table>
+
+        <div class="selection-info">
+            <span>{{ selection.selected.length }} telemetry key(s) selected</span>
+        </div>
+    </div>
+
+    <!-- No Telemetry Message -->
+    <div *ngIf="selectedDevice && telemetryKeys.length === 0 && !loading" class="no-data">
+        <mat-icon>info</mat-icon>
+        <p>No telemetry keys found for this device</p>
+        <p class="hint">Make sure the device has sent telemetry data to ThingsBoard</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button mat-raised-button color="primary" 
+                (click)="onApply()" 
+                [disabled]="selection.selected.length === 0">
+            Add Selected Tags
+        </button>
+    </div>
+</div>
