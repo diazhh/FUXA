@@ -337,6 +337,26 @@
                         </mat-expansion-panel>
                     </div>
                 </div>
+                <div *ngSwitchCase="deviceType.ThingsBoard">
+                    <div class="my-form-field" style="display: block;margin-bottom: 10px;">
+                        <span>Server URL</span>
+                        <input [(ngModel)]="data.device.property.serverUrl" style="width: 350px" type="text" placeholder="http://demo.thingsboard.io">
+                    </div>
+                    <div class="my-form-field" style="display: block;margin-bottom: 10px;">
+                        <span>{{'general.username' | translate}}</span>
+                        <input [(ngModel)]="data.device.property.username" style="width: 350px" type="text" placeholder="tenant@thingsboard.org">
+                    </div>
+                    <div class="my-form-field" style="display: block;margin-bottom: 10px;">
+                        <span>{{'general.password' | translate}}</span>
+                        <input autocomplete="off" (keydown)="keyDownStopPropagation($event)" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="data.device.property.password" style="width: 350px" placeholder="••••••••">
+                        <mat-icon matSuffix (click)="showPassword = !showPassword" class="show-password">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    </div>
+                    <div class="my-form-field" style="display: block;margin-bottom: 10px;">
+                        <mat-checkbox [(ngModel)]="data.device.property.useMqtt" color="primary">
+                            Use MQTT for real-time telemetry
+                        </mat-checkbox>
+                    </div>
+                </div>
                 <div *ngSwitchCase="deviceType.EthernetIP">
                     <div class="my-form-field" style="display: inline-block; margin-bottom: 10px;">
                         <span>{{'device.property-address-port' | translate}}</span>

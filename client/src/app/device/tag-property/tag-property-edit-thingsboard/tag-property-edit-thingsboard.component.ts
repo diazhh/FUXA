@@ -8,9 +8,10 @@
  * Las rutas de importación son relativas a esa ubicación.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Subject, takeUntil } from 'rxjs';
 
 import { Device, Tag } from '../../../_models/device';
 import { HmiService } from '../../../_services/hmi.service';
@@ -21,11 +22,13 @@ import { ProjectService } from '../../../_services/project.service';
     templateUrl: './tag-property-edit-thingsboard.component.html',
     styleUrls: ['./tag-property-edit-thingsboard.component.scss']
 })
-export class TagPropertyEditThingsboardComponent implements OnInit {
+export class TagPropertyEditThingsboardComponent implements OnInit, OnDestroy {
 
     @Input() device: Device;
     @Input() tag: Tag;
     @Output() result = new EventEmitter<any>();
+
+    private destroy$ = new Subject<void>();
 
     // UI State
     loading = false;
@@ -54,6 +57,20 @@ export class TagPropertyEditThingsboardComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        // Subscribe to device browse events
+        this.hmiService.onDeviceBrowse.pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(values => {
+            if (this.device.id === values.device) {
+                this.loading = false;
+                if (values.error) {
+                    this.error = 'Error: ' + values.error;
+                } else if (values.result) {
+                    this._handleBrowseResult(values.node, values.result);
+                }
+            }
+        });
+
         if (this.tag && this.tag.address) {
             // Parse existing tag address
             this._parseExistingTag();
@@ -63,28 +80,19 @@ export class TagPropertyEditThingsboardComponent implements OnInit {
         this.loadDevices();
     }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     /**
      * Load ThingsBoard devices
      */
     loadDevices() {
         this.loading = true;
         this.error = '';
-
-        this.hmiService.askDeviceBrowse(this.device.id, '').subscribe({
-            next: (result) => {
-                if (result && result.length > 0) {
-                    this.devices = result;
-                } else {
-                    this.error = 'No devices found';
-                }
-                this.loading = false;
-            },
-            error: (err) => {
-                this.error = 'Failed to load devices: ' + (err?.message || err);
-                console.error('Error loading devices:', err);
-                this.loading = false;
-            }
-        });
+        // Ask for device list (node = '' or null for root)
+        this.hmiService.askDeviceBrowse(this.device.id, '');
     }
 
     /**
@@ -95,23 +103,30 @@ export class TagPropertyEditThingsboardComponent implements OnInit {
         this.telemetryKeys = [];
         this.loading = true;
         this.error = '';
+        // Ask for telemetry keys of selected device
+        this.hmiService.askDeviceBrowse(this.device.id, device.id);
+    }
 
-        this.hmiService.askDeviceBrowse(this.device.id, device.id).subscribe({
-            next: (result) => {
-                if (result && result.length > 0) {
-                    this.telemetryKeys = result;
-                    this.dataSource.data = result;
-                } else {
-                    this.error = 'No telemetry keys found for this device';
-                }
-                this.loading = false;
-            },
-            error: (err) => {
-                this.error = 'Failed to load telemetry keys: ' + (err?.message || err);
-                console.error('Error loading telemetry:', err);
-                this.loading = false;
+    /**
+     * Handle browse result from server
+     */
+    private _handleBrowseResult(node: any, result: any[]) {
+        if (!node || node === '' || node === null) {
+            // Root level: device list
+            if (result && result.length > 0) {
+                this.devices = result;
+            } else {
+                this.error = 'No devices found';
             }
-        });
+        } else {
+            // Device level: telemetry keys
+            if (result && result.length > 0) {
+                this.telemetryKeys = result;
+                this.dataSource.data = result;
+            } else {
+                this.error = 'No telemetry keys found for this device';
+            }
+        }
     }
 
     /**

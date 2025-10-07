@@ -228,6 +228,28 @@ export class DevicePropertyComponent implements OnInit, OnDestroy {
 
 	onOkClick(): void {
 		this.data.security = this.getSecurity();
+		
+		// DEBUG: Log device data before saving
+		if (this.data.device.type === DeviceType.ThingsBoard) {
+			console.log('=== Saving ThingsBoard device ===');
+			console.log('Device name:', this.data.device.name);
+			console.log('Device type:', this.data.device.type);
+			console.log('Device enabled:', this.data.device.enabled);
+			console.log('Device property:', JSON.stringify(this.data.device.property));
+			console.log('Property object keys:', Object.keys(this.data.device.property));
+			console.log('Property.serverUrl:', this.data.device.property.serverUrl);
+			console.log('Property.username:', this.data.device.property.username);
+			console.log('Property.useMqtt:', this.data.device.property.useMqtt);
+			
+			// Ensure ThingsBoard properties are preserved
+			if (!this.data.device.property.serverUrl && !this.data.device.property.username) {
+				console.error('WARNING: ThingsBoard properties are missing! Re-initializing...');
+				this.data.device.property.serverUrl = this.data.device.property.serverUrl || '';
+				this.data.device.property.username = this.data.device.property.username || '';
+				this.data.device.property.password = this.data.device.property.password || '';
+				this.data.device.property.useMqtt = this.data.device.property.useMqtt !== undefined ? this.data.device.property.useMqtt : true;
+			}
+		}
 	}
 
 	onCheckOpcUaServer() {
@@ -273,6 +295,30 @@ export class DevicePropertyComponent implements OnInit, OnDestroy {
             this.pollingType = this.pollingWebCamType;
         } else {
 			this.pollingType = this.pollingPlcType;
+		}
+		
+		// Initialize ThingsBoard properties if not set
+		if (this.data.device.type === DeviceType.ThingsBoard) {
+			console.log('=== ThingsBoard selected ===');
+			console.log('Property before:', JSON.stringify(this.data.device.property));
+			
+			if (!this.data.device.property) {
+				this.data.device.property = {};
+			}
+			if (!this.data.device.property.serverUrl) {
+				this.data.device.property.serverUrl = '';
+			}
+			if (!this.data.device.property.username) {
+				this.data.device.property.username = '';
+			}
+			if (!this.data.device.property.password) {
+				this.data.device.property.password = '';
+			}
+			if (this.data.device.property.useMqtt === undefined) {
+				this.data.device.property.useMqtt = true;
+			}
+			
+			console.log('Property after:', JSON.stringify(this.data.device.property));
 		}
 	}
 

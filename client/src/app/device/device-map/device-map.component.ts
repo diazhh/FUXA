@@ -143,6 +143,7 @@ export class DeviceMapComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             this.plugins.push(DeviceType.WebAPI);
             this.plugins.push(DeviceType.MQTTclient);
+            this.plugins.push(DeviceType.ThingsBoard);
             this.plugins.push(DeviceType.internal);
         } else {
             this.plugins.push(DeviceType.internal);
@@ -514,6 +515,12 @@ export class DeviceMapComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (device.type === DeviceType.MELSEC) {
                             device.property.ascii = tempdevice.property.ascii;
                             device.property.octalIO = tempdevice.property.octalIO;
+                        }
+                        if (device.type === DeviceType.ThingsBoard) {
+                            device.property.serverUrl = tempdevice.property.serverUrl;
+                            device.property.username = tempdevice.property.username;
+                            device.property.password = tempdevice.property.password;
+                            device.property.useMqtt = tempdevice.property.useMqtt;
                         }
                         if (tempdevice.property.connectionOption) {
                             device.property.connectionOption = tempdevice.property.connectionOption;

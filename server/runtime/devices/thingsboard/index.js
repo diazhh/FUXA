@@ -183,12 +183,40 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
         data = JSON.parse(JSON.stringify(_data));
         varsValue = {};
 
+        // DEBUG: Log RAW data received
+        logger.info(`'${data.name}' ThingsBoard load() called`, true);
+        logger.info(`  data.property exists: ${!!data.property}`, true);
+        if (data.property) {
+            logger.info(`  property keys: ${Object.keys(data.property).join(', ')}`, true);
+            logger.info(`  property.serverUrl: '${data.property.serverUrl}'`, true);
+            logger.info(`  property.username: '${data.property.username}'`, true);
+            logger.info(`  property.address: '${data.property.address}'`, true);
+            logger.info(`  Full property: ${JSON.stringify(data.property)}`, true);
+        }
+        
         // Extract configuration
         if (data.property) {
             serverUrl = data.property.serverUrl || data.property.address || '';
             username = data.property.username || '';
             password = data.property.password || '';
             useMqtt = data.property.useMqtt !== false; // Default true
+            
+            // TEMPORARY: Use localhost:8080 if empty
+            if (!serverUrl) {
+                logger.warn(`'${data.name}' serverUrl is empty, using localhost:8080 for testing`, true);
+                serverUrl = 'http://localhost:8080';
+                username = 'tenant@thingsboard.org';  // Cambia esto por tus credenciales
+                password = 'tenant';  // Cambia esto por tu password
+            }
+            
+            // DEBUG: Log final configuration
+            logger.info(`'${data.name}' ThingsBoard config loaded:`, true);
+            logger.info(`  Final serverUrl: '${serverUrl}'`, true);
+            logger.info(`  Final username: '${username}'`, true);
+            logger.info(`  Final password: ${password ? '***' : '(empty)'}`, true);
+            logger.info(`  Final useMqtt: ${useMqtt}`, true);
+        } else {
+            logger.error(`'${data.name}' NO property object found!`, true);
         }
 
         // Initialize tags
