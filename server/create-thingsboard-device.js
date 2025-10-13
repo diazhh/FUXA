@@ -11,14 +11,14 @@ const dbPath = path.join(__dirname, '_appdata', 'project.fuxap.db');
 // Configuración del dispositivo
 const device = {
     id: 'tb_' + Date.now(),
-    name: 'ThingsBoard Local',
+    name: 'test7',
     type: 'ThingsBoard',
     enabled: true,
     polling: 5000,
     property: {
         serverUrl: 'http://localhost:8080',
-        username: 'tenant@thingsboard.org',  // CAMBIA ESTO
-        password: 'tenant',  // CAMBIA ESTO
+        username: 'tenant@thingsboard.org',
+        password: 'tenant',
         useMqtt: false,  // MQTT desactivado
         delay: 10,
         baudrate: 9600,

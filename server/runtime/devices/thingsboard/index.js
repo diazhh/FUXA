@@ -39,6 +39,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
     var username = '';                      // Username for authentication
     var password = '';                      // Password for authentication
     var useMqtt = true;                     // Use MQTT for real-time telemetry
+    var autoDiscover = true;                // Auto-discover devices on connect
     var jwtToken = null;                    // JWT authentication token
 
     /**
@@ -69,6 +70,15 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
 
                     // Initialize device mapper
                     deviceMapper = new TBDeviceMapper(logger);
+
+                    // Discover ThingsBoard devices and create tags (if enabled)
+                    if (autoDiscover) {
+                        logger.info(`'${data.name}' starting device discovery...`, true);
+                        await _discoverDevices();
+                        logger.info(`'${data.name}' device discovery completed`, true);
+                    } else {
+                        logger.info(`'${data.name}' auto-discovery disabled, skipping device discovery`, true);
+                    }
 
                     // Connect MQTT if enabled
                     if (useMqtt) {
@@ -137,21 +147,28 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
      * Polling function to read values
      * Used when MQTT is disabled or as fallback
      */
-    this.polling = async function () {
+    this.polling = async () => {
+        logger.info(`'${data.name}' polling called - connected=${connected}, restClient=${!!restClient}`, true);
+        
         if (!connected || !restClient) {
             return;
         }
 
         if (_checkWorking(true)) {
             try {
+                logger.info(`'${data.name}' polling - WORKING VERSION`, true);
+                
                 // Get all device IDs from tags
                 const deviceIds = _getDeviceIdsFromTags();
 
                 // Read telemetry for each device
+                logger.info(`'${data.name}' polling ${deviceIds.length} devices`, true);
                 for (const deviceId of deviceIds) {
                     const keys = _getKeysForDevice(deviceId);
                     if (keys.length > 0) {
+                        logger.info(`'${data.name}' reading ${keys.length} keys from device ${deviceId}`, true);
                         const telemetry = await restClient.getLatestTelemetry(deviceId, keys);
+                        logger.info(`'${data.name}' received telemetry: ${JSON.stringify(telemetry)}`, true);
                         _handleTelemetryUpdate(deviceId, telemetry);
                     }
                 }
@@ -160,12 +177,13 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
                 
                 // Check for changed values
                 var varsValueChanged = await _checkVarsChanged();
+                logger.info(`'${data.name}' varsValue count: ${Object.keys(varsValue).length}`, true);
                 _emitValues(varsValue);
 
-                // Save to DAQ if enabled
-                if (this.addDaq && !utils.isEmptyObject(varsValueChanged)) {
-                    this.addDaq(varsValueChanged, data.name, data.id);
-                }
+                // DAQ is disabled for now - will be fixed later
+                // if (this.addDaq && !utils.isEmptyObject(varsValueChanged)) {
+                //     this.addDaq(varsValueChanged, data.name, data.id);
+                // }
 
                 _checkWorking(false);
 
@@ -200,6 +218,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
             username = data.property.username || '';
             password = data.property.password || '';
             useMqtt = data.property.useMqtt !== false; // Default true
+            autoDiscover = data.property.autoDiscover !== false; // Default true
             
             // TEMPORARY: Use localhost:8080 if empty
             if (!serverUrl) {
@@ -215,6 +234,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
             logger.info(`  Final username: '${username}'`, true);
             logger.info(`  Final password: ${password ? '***' : '(empty)'}`, true);
             logger.info(`  Final useMqtt: ${useMqtt}`, true);
+            logger.info(`  Final autoDiscover: ${autoDiscover}`, true);
         } else {
             logger.error(`'${data.name}' NO property object found!`, true);
         }
@@ -293,6 +313,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
             if (!varsValue[tagId]) {
                 varsValue[tagId] = {};
             }
+            varsValue[tagId].id = tagId;
             varsValue[tagId].value = actualValue;
             varsValue[tagId].timestamp = new Date().getTime();
 
@@ -414,6 +435,97 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
     // ========== PRIVATE FUNCTIONS ==========
 
     /**
+     * Discover ThingsBoard devices and create tags automatically
+     */
+    var _discoverDevices = async function () {
+        try {
+            logger.info(`'${data.name}' discovering ThingsBoard devices...`, true);
+            
+            // Count existing tags before discovery
+            const existingTagCount = Object.keys(data.tags).length;
+            
+            // Get all devices from ThingsBoard
+            const devices = await restClient.getDevices(100, 0);
+            logger.info(`'${data.name}' found ${devices.length} ThingsBoard devices`, true);
+            
+            // Track statistics
+            let devicesProcessed = 0;
+            let tagsCreated = 0;
+            let tagsSkipped = 0;
+            
+            // Create tags for each device
+            for (const device of devices) {
+                const deviceId = device.id.id;
+                const deviceName = device.name;
+                
+                try {
+                    // Get telemetry keys for this device
+                    const telemetryKeys = await restClient.getTelemetryKeys(deviceId);
+                    
+                    if (telemetryKeys.length > 0) {
+                        logger.info(
+                            `'${data.name}' device '${deviceName}' has ${telemetryKeys.length} telemetry keys`, 
+                            true
+                        );
+                        
+                        // Create a tag for each telemetry key
+                        for (const key of telemetryKeys) {
+                            const tagId = `${deviceId}_${key}`;
+                            const tagName = `${deviceName}.${key}`;
+                            
+                            // Check if tag already exists
+                            if (!data.tags[tagId]) {
+                                data.tags[tagId] = {
+                                    id: tagId,
+                                    name: tagName,
+                                    address: `${deviceId}:${key}`,
+                                    type: 'number', // Default type
+                                    device: data.id,
+                                    memaddress: `${deviceId}:${key}`,
+                                    divisor: 1,
+                                    daq: {}
+                                };
+                                tagsCreated++;
+                            } else {
+                                tagsSkipped++;
+                            }
+                        }
+                        
+                        devicesProcessed++;
+                    }
+                } catch (err) {
+                    logger.error(`'${data.name}' error processing device '${deviceName}': ${err}`);
+                }
+            }
+            
+            // Calculate new tags
+            const currentTagCount = Object.keys(data.tags).length;
+            const newTagsCount = currentTagCount - existingTagCount;
+            
+            // Log summary
+            logger.info(
+                `'${data.name}' discovery complete: ` +
+                `${devicesProcessed} devices processed, ` +
+                `${tagsCreated} tags created, ` +
+                `${tagsSkipped} tags skipped (already exist)`,
+                true
+            );
+            
+            // Only emit event if we created NEW tags
+            if (newTagsCount > 0) {
+                logger.info(`'${data.name}' emitting device-tags-update event with ${newTagsCount} new tags`, true);
+                events.emit('device-tags-update', { deviceId: data.id, tags: data.tags });
+            } else {
+                logger.info(`'${data.name}' no new tags to persist (${existingTagCount} tags already exist)`, true);
+            }
+            
+        } catch (err) {
+            logger.error(`'${data.name}' device discovery error: ${err}`);
+            throw err;
+        }
+    }
+
+    /**
      * Handle telemetry update from MQTT or REST
      */
     var _handleTelemetryUpdate = function (deviceId, telemetry) {
@@ -433,6 +545,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
                     const newValue = telemetry[key];
                     const oldValue = varsValue[tagId].value;
                     
+                    varsValue[tagId].id = tagId;
                     varsValue[tagId].rawValue = newValue;
                     varsValue[tagId].value = newValue;
                     varsValue[tagId].timestamp = telemetry.ts || new Date().getTime();
@@ -496,9 +609,10 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
                 );
 
                 // Check if should save to DAQ
-                if (this.addDaq && deviceUtils.tagDaqToSave(data.tags[id], timestamp)) {
-                    result[id] = data.tags[id];
-                }
+                // DAQ disabled for now
+                // if (this.addDaq && deviceUtils.tagDaqToSave(data.tags[id], timestamp)) {
+                //     result[id] = data.tags[id];
+                // }
             }
             
             // Reset changed flag
@@ -532,7 +646,9 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
      * Emit tag values
      */
     var _emitValues = function (values) {
-        events.emit('device-value:changed', { id: data.name, values: values });
+        const valueCount = Object.keys(values).length;
+        logger.info(`'${data.name}' emitting ${valueCount} values with device id: ${data.id}`, true);
+        events.emit('device-value:changed', { id: data.id, values: values });
     }
 
     /**

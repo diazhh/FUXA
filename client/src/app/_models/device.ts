@@ -203,6 +203,8 @@ export class DeviceNetProperty {
     password: string = '';
     /** ThingsBoard use MQTT */
     useMqtt: boolean = true;
+    /** ThingsBoard auto-discover devices and create tags on connect */
+    autoDiscover: boolean = true;
 
     static descriptor = {
         address: 'Device address (IP)',

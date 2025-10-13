@@ -317,6 +317,9 @@ export class DevicePropertyComponent implements OnInit, OnDestroy {
 			if (this.data.device.property.useMqtt === undefined) {
 				this.data.device.property.useMqtt = true;
 			}
+			if (this.data.device.property.autoDiscover === undefined) {
+				this.data.device.property.autoDiscover = true;
+			}
 			
 			console.log('Property after:', JSON.stringify(this.data.device.property));
 		}

@@ -356,6 +356,14 @@
                             Use MQTT for real-time telemetry
                         </mat-checkbox>
                     </div>
+                    <div class="my-form-field" style="display: block;margin-bottom: 10px;">
+                        <mat-checkbox [(ngModel)]="data.device.property.autoDiscover" color="primary">
+                            Auto-discover devices on connect
+                        </mat-checkbox>
+                        <div style="font-size: 11px; color: #666; margin-left: 32px; margin-top: 4px;">
+                            Automatically discover all ThingsBoard devices and create tags for their telemetry
+                        </div>
+                    </div>
                 </div>
                 <div *ngSwitchCase="deviceType.EthernetIP">
                     <div class="my-form-field" style="display: inline-block; margin-bottom: 10px;">
