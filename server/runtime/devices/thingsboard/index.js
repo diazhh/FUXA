@@ -38,9 +38,11 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
     var serverUrl = '';                     // ThingsBoard server URL
     var username = '';                      // Username for authentication
     var password = '';                      // Password for authentication
-    var useMqtt = true;                     // Use MQTT for real-time telemetry
+    var useMqtt = false;                     // Use MQTT for real-time telemetry
     var autoDiscover = true;                // Auto-discover devices on connect
+    var discoveryInterval = 10000;          // Auto-discovery interval in ms (default: 10 seconds)
     var jwtToken = null;                    // JWT authentication token
+    var discoveryTimer = null;              // Timer for periodic device discovery
 
     /**
      * Initialize the driver
@@ -95,6 +97,12 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
 
                     connected = true;
                     _emitStatus('connect-ok');
+                    
+                    // Start periodic device discovery if enabled
+                    if (autoDiscover && discoveryInterval > 0) {
+                        _startPeriodicDiscovery();
+                    }
+                    
                     _checkWorking(false);
                     resolve();
 
@@ -120,6 +128,9 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
             try {
                 logger.info(`'${data.name}' disconnecting`, true);
 
+                // Stop periodic discovery
+                _stopPeriodicDiscovery();
+                
                 // Disconnect MQTT
                 if (mqttClient) {
                     await mqttClient.disconnect();
@@ -219,6 +230,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
             password = data.property.password || '';
             useMqtt = data.property.useMqtt !== false; // Default true
             autoDiscover = data.property.autoDiscover !== false; // Default true
+            discoveryInterval = data.property.discoveryInterval || 10000; // Default 10 seconds
             
             // TEMPORARY: Use localhost:8080 if empty
             if (!serverUrl) {
@@ -235,6 +247,7 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
             logger.info(`  Final password: ${password ? '***' : '(empty)'}`, true);
             logger.info(`  Final useMqtt: ${useMqtt}`, true);
             logger.info(`  Final autoDiscover: ${autoDiscover}`, true);
+            logger.info(`  Final discoveryInterval: ${discoveryInterval}ms`, true);
         } else {
             logger.error(`'${data.name}' NO property object found!`, true);
         }
@@ -668,6 +681,42 @@ function ThingsBoardClient(_data, _logger, _events, _runtime) {
         working = check;
         overloading = 0;
         return true;
+    }
+
+    /**
+     * Start periodic device discovery
+     */
+    var _startPeriodicDiscovery = function () {
+        if (discoveryTimer) {
+            clearInterval(discoveryTimer);
+        }
+        
+        logger.info(
+            `'${data.name}' starting periodic device discovery every ${discoveryInterval}ms`,
+            true
+        );
+        
+        discoveryTimer = setInterval(async () => {
+            if (connected && restClient) {
+                try {
+                    logger.info(`'${data.name}' running periodic device discovery...`, true);
+                    await _discoverDevices();
+                } catch (err) {
+                    logger.error(`'${data.name}' periodic discovery error: ${err}`);
+                }
+            }
+        }, discoveryInterval);
+    }
+
+    /**
+     * Stop periodic device discovery
+     */
+    var _stopPeriodicDiscovery = function () {
+        if (discoveryTimer) {
+            logger.info(`'${data.name}' stopping periodic device discovery`, true);
+            clearInterval(discoveryTimer);
+            discoveryTimer = null;
+        }
     }
 }
 
