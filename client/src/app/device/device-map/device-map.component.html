@@ -72,7 +72,8 @@
         <!-- Edit Column -->
         <ng-container matColumnDef="select">
             <mat-header-cell *matHeaderCellDef [ngClass]="!readonly ? 'selectWidthClass' : 'selectHideClass'">
-                <button *ngIf="!readonly" mat-icon-button (click)="addDevice()" class="remove" matTooltip="{{'device.property-add' | translate}}">
+                <!-- (click)="addDevice()" -->
+                <button *ngIf="!readonly" mat-icon-button class="remove" matTooltip="{{'device.property-add' | translate}}">
                     <mat-icon>add</mat-icon>
                 </button>
             </mat-header-cell>
@@ -93,7 +94,7 @@
         <!-- Type Column -->
         <ng-container matColumnDef="type">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{'devices.list-type' | translate}} </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.type}} </mat-cell>
+            <mat-cell *matCellDef="let element">{{getDeviceTypeDisplayName(element.type)}} </mat-cell>
         </ng-container>
         <!-- Polling Column -->
         <ng-container matColumnDef="polling">

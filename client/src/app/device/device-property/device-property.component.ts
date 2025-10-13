@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { EndPointSettings, HmiService } from '../../_services/hmi.service';
 import { AppService } from '../../_services/app.service';
 import { ProjectService } from '../../_services/project.service';
-import { DeviceType, DeviceSecurity, MessageSecurityMode, SecurityPolicy, ModbusOptionType, ModbusReuseModeType } from './../../_models/device';
+import { DeviceType, DeviceSecurity, MessageSecurityMode, SecurityPolicy, ModbusOptionType, ModbusReuseModeType, DeviceTypeDisplayNames } from './../../_models/device';
 
 @Component({
 	selector: 'app-device-property',
@@ -428,6 +428,10 @@ export class DevicePropertyComponent implements OnInit, OnDestroy {
 			this.translateService.get('device.security-signandencrypt').subscribe((txt: string) => { result = txt; });
 		}
 		return result;
+	}
+
+	getDeviceTypeDisplayName(typeKey: string): string {
+		return DeviceTypeDisplayNames[typeKey] || typeKey;
 	}
 }
 

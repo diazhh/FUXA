@@ -19,7 +19,7 @@
                 <span>{{'device.property-type' | translate}}</span>
                 <mat-select [(value)]="data.device.type" (selectionChange)="onDeviceTypeChanged()" #devicetype style="width: 160px" [disabled]="isFuxaServer">
                     <mat-option *ngFor="let type of deviceType | enumToArray" [value]="type.key">
-                        {{ type.value }}
+                        {{ getDeviceTypeDisplayName(type.key) }}
                     </mat-option>
                 </mat-select>
             </div>
@@ -361,7 +361,7 @@
                             Auto-discover devices on connect
                         </mat-checkbox>
                         <div style="font-size: 11px; color: #666; margin-left: 32px; margin-top: 4px;">
-                            Automatically discover all ThingsBoard devices and create tags for their telemetry
+                            Automatically discover all devices and create tags for their telemetry
                         </div>
                     </div>
                 </div>

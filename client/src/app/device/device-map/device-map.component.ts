@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DevicePropertyComponent } from './../device-property/device-property.component';
 import { ProjectService } from '../../_services/project.service';
 import { PluginService } from '../../_services/plugin.service';
-import { Device, DeviceType, DeviceNetProperty, DEVICE_PREFIX, DeviceViewModeType, DeviceConnectionStatusType } from './../../_models/device';
+import { Device, DeviceType, DeviceNetProperty, DEVICE_PREFIX, DeviceViewModeType, DeviceConnectionStatusType, DeviceTypeDisplayNames } from './../../_models/device';
 import { Utils } from '../../_helpers/utils';
 import { AppService } from '../../_services/app.service';
 import { DeviceWebapiPropertyDialogComponent } from './device-webapi-property-dialog/device-webapi-property-dialog.component';
@@ -557,5 +557,9 @@ export class DeviceMapComponent implements OnInit, OnDestroy, AfterViewInit {
         return <Device[]>Object.values(this.devices).filter((d: Device) => d.type === DeviceType.WebAPI
             || d.type === DeviceType.ODBC
             || d.type === DeviceType.internal);
+    }
+
+    getDeviceTypeDisplayName(type: string): string {
+        return DeviceTypeDisplayNames[type] || type;
     }
 }

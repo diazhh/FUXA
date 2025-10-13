@@ -260,6 +260,25 @@ export enum DeviceType {
     // Template: 'template'
 }
 
+export const DeviceTypeDisplayNames = {
+    'FuxaServer': 'FuxaServer',
+    'SiemensS7': 'SiemensS7',
+    'OPCUA': 'OPCUA',
+    'BACnet': 'BACnet',
+    'ModbusRTU': 'ModbusRTU',
+    'ModbusTCP': 'ModbusTCP',
+    'WebAPI': 'WebAPI',
+    'MQTTclient': 'MQTTclient',
+    'internal': 'internal',
+    'EthernetIP': 'EthernetIP',
+    'ODBC': 'ODBC',
+    'ADSclient': 'ADSclient',
+    'GPIO': 'GPIO',
+    'WebCam': 'WebCam',
+    'MELSEC': 'MELSEC',
+    'ThingsBoard': 'Local'
+};
+
 export enum TagType {
     Bool = 'Bool',
     Byte = 'Byte',
