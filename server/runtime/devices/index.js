@@ -17,6 +17,9 @@ const FuxaServerId = '0';
  */
 function init(_runtime) {
     runtime = _runtime;
+    
+    // Listen for auto-discovered tags from ThingsBoard and other devices
+    runtime.events.on('device-tags-update', handleDeviceTagsUpdate);
 }
 
 /**
@@ -531,6 +534,62 @@ async function getHistoricalTags(tagIds, fromTs, toTs) {
             resolve(res);
         }).catch((err) => reject(err));
     });
+}
+
+/**
+ * Handle auto-discovered tags from devices (e.g., ThingsBoard)
+ * Persist the tags to the database
+ * @param {*} event { deviceId, tags }
+ */
+function handleDeviceTagsUpdate(event) {
+    try {
+        const { deviceId, tags } = event;
+        
+        if (!deviceId || !tags) {
+            runtime.logger.warn('Invalid device-tags-update event: missing deviceId or tags');
+            return;
+        }
+        
+        // Get current device from project
+        let device = null;
+        const devices = runtime.project.getDevices();
+        for (const id in devices) {
+            if (devices[id].id === deviceId) {
+                device = devices[id];
+                break;
+            }
+        }
+        
+        if (!device) {
+            runtime.logger.warn(`Device ${deviceId} not found for tags update`);
+            return;
+        }
+        
+        // Count new tags
+        const existingTagCount = Object.keys(device.tags || {}).length;
+        const newTagCount = Object.keys(tags).length;
+        
+        // Update tags (merge with existing)
+        device.tags = { ...device.tags, ...tags };
+        
+        // Persist to database
+        const ProjectDataCmdType = runtime.project.ProjectDataCmdType;
+        runtime.project.setProjectData(ProjectDataCmdType.SetDevice, device)
+            .then(() => {
+                const addedTags = newTagCount - existingTagCount;
+                runtime.logger.info(
+                    `Auto-discovered tags saved for device '${device.name}': ` +
+                    `${addedTags} new tags (${newTagCount} total)`, 
+                    true
+                );
+            })
+            .catch(err => {
+                runtime.logger.error(`Failed to save auto-discovered tags for '${device.name}': ${err}`);
+            });
+        
+    } catch (err) {
+        runtime.logger.error(`Error handling device-tags-update: ${err}`);
+    }
 }
 
 var devices = module.exports = {

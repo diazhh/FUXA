@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const async = require('async');
+const crypto = require('crypto');
 
 var events = require('../events');
 var utils = require('../utils');
@@ -148,6 +149,8 @@ function load() {
                         if (err) {
                             reject(err);
                         } else {
+                            // Load ThingsBoard auto-configuration before merging default config
+                            await _loadThingsBoardConfig();
                             await _mergeDefaultConfig();
                             resolve();
                         }
@@ -979,6 +982,113 @@ function _filterProjectPermission(userPermission) {
         }
     }
     return result;
+}
+
+/**
+ * Load ThingsBoard devices from configuration file
+ * This allows FUXA to start with pre-configured ThingsBoard connections
+ */
+async function _loadThingsBoardConfig() {
+    try {
+        const configPath = path.join(settings.workDir, 'thingsboard-config.json');
+        
+        // Check if config file exists
+        if (!fs.existsSync(configPath)) {
+            logger.info('No ThingsBoard config file found (thingsboard-config.json), skipping auto-configuration');
+            return;
+        }
+        
+        // Read and parse config file
+        const configData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        
+        if (!configData.devices || !Array.isArray(configData.devices)) {
+            logger.warn('ThingsBoard config file has invalid format: missing or invalid "devices" array');
+            return;
+        }
+        
+        if (configData.devices.length === 0) {
+            logger.info('ThingsBoard config file is empty (no devices configured)');
+            return;
+        }
+        
+        logger.info(`Loading ${configData.devices.length} ThingsBoard device(s) from config file`, true);
+        
+        let devicesCreated = 0;
+        let devicesSkipped = 0;
+        
+        for (const deviceConfig of configData.devices) {
+            try {
+                // Validate device config
+                if (!deviceConfig.name) {
+                    logger.warn('Skipping ThingsBoard device with missing name');
+                    devicesSkipped++;
+                    continue;
+                }
+                
+                if (!deviceConfig.property || !deviceConfig.property.serverUrl) {
+                    logger.warn(`Skipping ThingsBoard device '${deviceConfig.name}': missing serverUrl`);
+                    devicesSkipped++;
+                    continue;
+                }
+                
+                // Check if device already exists (by name and type)
+                const existingDevice = Object.values(data.devices).find(d => 
+                    d.name === deviceConfig.name && d.type === 'ThingsBoard'
+                );
+                
+                if (existingDevice) {
+                    logger.info(`ThingsBoard device '${deviceConfig.name}' already exists, skipping`);
+                    devicesSkipped++;
+                    continue;
+                }
+                
+                // Generate unique ID
+                const deviceId = 'd-' + crypto.randomBytes(8).toString('hex');
+                
+                // Create device object
+                const device = {
+                    id: deviceId,
+                    name: deviceConfig.name,
+                    type: 'ThingsBoard',
+                    enabled: deviceConfig.enabled !== false, // Default true
+                    polling: deviceConfig.polling || 5000,
+                    tags: {},
+                    property: {
+                        serverUrl: deviceConfig.property.serverUrl,
+                        username: deviceConfig.property.username || '',
+                        password: deviceConfig.property.password || '',
+                        useMqtt: deviceConfig.property.useMqtt !== false, // Default true
+                        autoDiscover: deviceConfig.property.autoDiscover !== false // Default true
+                    }
+                };
+                
+                // Add to local data
+                setDevice(device);
+                
+                // Save to database
+                await setProjectData(ProjectDataCmdType.SetDevice, device);
+                
+                logger.info(
+                    `ThingsBoard device '${device.name}' created from config ` +
+                    `(enabled: ${device.enabled}, autoDiscover: ${device.property.autoDiscover})`,
+                    true
+                );
+                devicesCreated++;
+                
+            } catch (err) {
+                logger.error(`Error creating ThingsBoard device '${deviceConfig.name}': ${err}`);
+                devicesSkipped++;
+            }
+        }
+        
+        logger.info(
+            `ThingsBoard config loaded: ${devicesCreated} devices created, ${devicesSkipped} skipped`,
+            true
+        );
+        
+    } catch (err) {
+        logger.error(`Error loading ThingsBoard config: ${err}`);
+    }
 }
 
 function _mergeDefaultConfig() {

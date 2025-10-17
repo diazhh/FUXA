@@ -20,7 +20,7 @@
     "header.edit-users": "Users settings",
     "header.edit-alarms": "Alarms settings",
     "header.edit-texts": "Texts settings",
-    "header.help": "FUXA Help",
+    "header.help": "GDT-SCADA Help",
     "header.help-tutorial": "Tutorial",
     "header.help-info": "About",
     "header.change-thema": "Switch Theme (beta)",
@@ -29,11 +29,11 @@
 
     "project.name": "Project name",
 
-    "sidenav.title": "FUXA",
+    "sidenav.title": "GDT-SCADA",
 
-    "tutorial.title": "FUXA Tutorial",
+    "tutorial.title": "GDT-SCADA Tutorial",
 
-    "dlg.info-title": "FUXA",
+    "dlg.info-title": "GDT-SCADA",
 
     "dlg.layout-title": "Layout settings",
     "dlg.layout-general": "General",
@@ -893,7 +893,7 @@
     "device.tags-template-name-title": "Tags template name",
     "devices.import-template": "Import Connections with template",
     "device.property-client": "Connections Property",
-    "device.property-server": "FUXA Server Property",
+    "device.property-server": "GDT-SCADA Server Property",
     "device.property-name": "Name",
     "device.property-type": "Type",
     "device.property-polling": "Polling",

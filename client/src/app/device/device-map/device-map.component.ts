@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DevicePropertyComponent } from './../device-property/device-property.component';
 import { ProjectService } from '../../_services/project.service';
 import { PluginService } from '../../_services/plugin.service';
-import { Device, DeviceType, DeviceNetProperty, DEVICE_PREFIX, DeviceViewModeType, DeviceConnectionStatusType } from './../../_models/device';
+import { Device, DeviceType, DeviceNetProperty, DEVICE_PREFIX, DeviceViewModeType, DeviceConnectionStatusType, DeviceTypeDisplayNames } from './../../_models/device';
 import { Utils } from '../../_helpers/utils';
 import { AppService } from '../../_services/app.service';
 import { DeviceWebapiPropertyDialogComponent } from './device-webapi-property-dialog/device-webapi-property-dialog.component';
@@ -143,6 +143,7 @@ export class DeviceMapComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             this.plugins.push(DeviceType.WebAPI);
             this.plugins.push(DeviceType.MQTTclient);
+            this.plugins.push(DeviceType.ThingsBoard);
             this.plugins.push(DeviceType.internal);
         } else {
             this.plugins.push(DeviceType.internal);
@@ -515,6 +516,12 @@ export class DeviceMapComponent implements OnInit, OnDestroy, AfterViewInit {
                             device.property.ascii = tempdevice.property.ascii;
                             device.property.octalIO = tempdevice.property.octalIO;
                         }
+                        if (device.type === DeviceType.ThingsBoard) {
+                            device.property.serverUrl = tempdevice.property.serverUrl;
+                            device.property.username = tempdevice.property.username;
+                            device.property.password = tempdevice.property.password;
+                            device.property.useMqtt = tempdevice.property.useMqtt;
+                        }
                         if (tempdevice.property.connectionOption) {
                             device.property.connectionOption = tempdevice.property.connectionOption;
                         }
@@ -550,5 +557,9 @@ export class DeviceMapComponent implements OnInit, OnDestroy, AfterViewInit {
         return <Device[]>Object.values(this.devices).filter((d: Device) => d.type === DeviceType.WebAPI
             || d.type === DeviceType.ODBC
             || d.type === DeviceType.internal);
+    }
+
+    getDeviceTypeDisplayName(type: string): string {
+        return DeviceTypeDisplayNames[type] || type;
     }
 }

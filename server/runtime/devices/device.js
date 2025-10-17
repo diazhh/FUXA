@@ -18,6 +18,11 @@ var GpioClient = require('./gpio');
 var WebCamClient = require('./webcam');
 var MELSECClient = require('./melsec');
 
+// Clear ThingsBoard module cache to ensure latest version is loaded
+const tbModulePath = require.resolve('./thingsboard');
+delete require.cache[tbModulePath];
+var ThingsBoardClient = require('./thingsboard');
+
 const path = require('path');
 const utils = require('../utils');
 
@@ -113,6 +118,16 @@ function Device(data, runtime) {
             return null;
         }
         comm = MELSECClient.create(data, logger, events, manager, runtime);
+    } else if (data.type === DeviceEnum.ThingsBoard) {
+        // Force reload ThingsBoard module to get latest changes
+        const tbPath = require.resolve('./thingsboard');
+        delete require.cache[tbPath];
+        ThingsBoardClient = require('./thingsboard');
+        
+        if (!ThingsBoardClient) {
+            return null;
+        }
+        comm = ThingsBoardClient.create(data, logger, events, manager, runtime);
     }
     // else if (data.type === DeviceEnum.Template) {
     //     if (!TEMPLATEclient) {
@@ -220,10 +235,12 @@ function Device(data, runtime) {
             comm.init(MODBUSclient.ModbusTypes.TCP);
         }
         return comm.connect().then(function () {
+            logger.info(`'${data.name}' connected, setting up polling interval: ${pollingInterval}ms`, true);
             if (pollingInterval !== DISABLE_POLLING_INTERVAL){
                 devicePolling = setInterval(function () {
                     self.polling();
                 }, pollingInterval);
+                logger.info(`'${data.name}' polling interval created`, true);
             }
         });
     }
@@ -297,6 +314,12 @@ function Device(data, runtime) {
                     reject(err);
                 });
             } else if (data.type === DeviceEnum.ODBC) {
+                comm.browse(path, callback).then(function (result) {
+                    resolve(result);
+                }).catch(function (err) {
+                    reject(err);
+                });
+            } else if (data.type === DeviceEnum.ThingsBoard) {
                 comm.browse(path, callback).then(function (result) {
                     resolve(result);
                 }).catch(function (err) {
@@ -530,6 +553,8 @@ function loadPlugin(type, module) {
         GpioClient = require(module);
     } else if (type === DeviceEnum.MELSEC) {
         MELSECClient = require(module);
+    } else if (type === DeviceEnum.ThingsBoard) {
+        ThingsBoardClient = require(module);
     }
 }
 
@@ -571,6 +596,7 @@ var DeviceEnum = {
     internal: 'internal',
     WebCam: 'WebCam',
     MELSEC: 'MELSEC',
+    ThingsBoard: 'ThingsBoard'
     // Template: 'template'
 }
 

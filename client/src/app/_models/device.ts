@@ -39,7 +39,7 @@ export class Device {
         id: 'Device id, GUID',
         name: 'Device name',
         enabled: 'Enabled',
-        type: 'Device Type: FuxaServer | SiemensS7 | OPCUA | BACnet | ModbusRTU | ModbusTCP | WebAPI | MQTTclient | internal | EthernetIP | ADSclient | Gpio | WebCam | MELSEC',
+        type: 'Device Type: FuxaServer | SiemensS7 | OPCUA | BACnet | ModbusRTU | ModbusTCP | WebAPI | MQTTclient | internal | EthernetIP | ADSclient | Gpio | WebCam | MELSEC | ThingsBoard',
         polling: 'Polling interval in millisec., check changed value after ask value, by OPCUA there is a monitor',
         property: 'Connection property depending of type',
         tags: 'Tags list of Tag',
@@ -195,6 +195,16 @@ export class DeviceNetProperty {
     /** MELSEC */
     ascii?: boolean;
     octalIO?: boolean;
+    /** ThingsBoard server URL */
+    serverUrl: string = '';
+    /** ThingsBoard username */
+    username: string = '';
+    /** ThingsBoard password */
+    password: string = '';
+    /** ThingsBoard use MQTT */
+    useMqtt: boolean = true;
+    /** ThingsBoard auto-discover devices and create tags on connect */
+    autoDiscover: boolean = true;
 
     static descriptor = {
         address: 'Device address (IP)',
@@ -245,9 +255,29 @@ export enum DeviceType {
     ADSclient = 'ADSclient',
     GPIO = 'GPIO',
     WebCam = 'WebCam',
-    MELSEC = 'MELSEC'
+    MELSEC = 'MELSEC',
+    ThingsBoard = 'ThingsBoard'
     // Template: 'template'
 }
+
+export const DeviceTypeDisplayNames = {
+    'FuxaServer': 'FuxaServer',
+    'SiemensS7': 'SiemensS7',
+    'OPCUA': 'OPCUA',
+    'BACnet': 'BACnet',
+    'ModbusRTU': 'ModbusRTU',
+    'ModbusTCP': 'ModbusTCP',
+    'WebAPI': 'WebAPI',
+    'MQTTclient': 'MQTTclient',
+    'internal': 'internal',
+    'EthernetIP': 'EthernetIP',
+    'ODBC': 'ODBC',
+    'ADSclient': 'ADSclient',
+    'GPIO': 'GPIO',
+    'WebCam': 'WebCam',
+    'MELSEC': 'MELSEC',
+    'ThingsBoard': 'Local'
+};
 
 export enum TagType {
     Bool = 'Bool',
