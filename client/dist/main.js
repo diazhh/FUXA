@@ -12701,7 +12701,7 @@ let AppComponent = class AppComponent {
     this.location = location;
   }
   ngOnInit() {
-    console.log(`FUXA v${_environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.version}`);
+    console.log(`GDT-SCADA v${_environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.version}`);
     this.heartbeatService.startHeartbeatPolling();
     // capture events for the token refresh
     const inactivityDuration = 1 * 60 * 1000;
@@ -48190,7 +48190,7 @@ let ReportEditorComponent = ReportEditorComponent_1 = class ReportEditorComponen
         ...report.docproperty
       };
       docDefinition['header'] = {
-        text: 'FUXA by frangoteam',
+        text: 'GDT-SCADA by GDT',
         style: [{
           fontSize: 6
         }]
@@ -64064,7 +64064,7 @@ module.exports = "<div class=\"header-panel\" *ngIf=\"editorMode\">\n    <button
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div style=\"width:280px\">\n    <div mat-dialog-title style=\"display:inline-block\">\n        <div class=\"logo\" style=\"display: inline-block\"></div>\n        <div style=\"font-size: 18px;display: inline-block;vertical-align: super;padding-left: 5px;\">{{'dlg.info-title' | translate}}</div>\n    </div>\n    <div mat-dialog-content style=\"margin-bottom: 10px;\">\n        <div style=\"display: block\">\n            {{'header.info-version' | translate}} {{data.version}}\n        </div>\n        <div style=\"display: block; font-size: 13px;margin-top: 10px;\">\n            powered by <span><b>frango</b>team</span>\n        </div>\n    </div>\n    <div mat-dialog-actions class=\"dialog-action\">\n        <button mat-raised-button [mat-dialog-close]=\"data\">{{'dlg.ok' | translate}}</button>\n    </div>\n</div>";
+module.exports = "<div style=\"width:280px\">\n    <div mat-dialog-title style=\"display:inline-block\">\n        <div class=\"logo\" style=\"display: inline-block\"></div>\n        <div style=\"font-size: 18px;display: inline-block;vertical-align: super;padding-left: 5px;\">{{'dlg.info-title' | translate}}</div>\n    </div>\n    <div mat-dialog-content style=\"margin-bottom: 10px;\">\n        <div style=\"display: block\">\n            {{'header.info-version' | translate}} {{data.version}}\n        </div>\n        <div style=\"display: block; font-size: 13px;margin-top: 10px;\">\n            powered by <span><b>GDT</b></span>\n        </div>\n    </div>\n    <div mat-dialog-actions class=\"dialog-action\">\n        <button mat-raised-button [mat-dialog-close]=\"data\">{{'dlg.ok' | translate}}</button>\n    </div>\n</div>";
 
 /***/ }),
 
@@ -64097,7 +64097,7 @@ module.exports = "<div *ngIf=\"isLoading\" style=\"position:absolute;top:0px;lef
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div style=\"display:block; text-align: center;padding-top: 20px; padding-bottom: 10px;width: 220px\">\n\t<div style=\"display: block; margin: auto\">\n\t\t<mat-icon [style.color]=\"'rgb(59, 144, 255)'\">account_circle</mat-icon>\n\t</div>\n\t<div style=\"font-size: 14px;display: block;padding-top: 10px;padding-bottom: 10px;\">\n\t\t{{data.username}}\n\t</div>\n\t<div style=\"font-size: 14px;display: block;padding-top: 10px;padding-bottom: 10px;\">\n\t\t{{data.fullname}}\n\t</div>\n\t<div style=\"display: block; padding-bottom:20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);\">\n\t\t<button mat-raised-button [mat-dialog-close]=\"true\">{{'dlg.logout-btn' | translate}}</button>\n\t</div>\n\t<div style=\"display: block; font-size: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.1);\">\n\t\tFUXA powered by <span><b>frango</b>team</span>\n\t</div>\n</div>";
+module.exports = "<div style=\"display:block; text-align: center;padding-top: 20px; padding-bottom: 10px;width: 220px\">\n\t<div style=\"display: block; margin: auto\">\n\t\t<mat-icon [style.color]=\"'rgb(59, 144, 255)'\">account_circle</mat-icon>\n\t</div>\n\t<div style=\"font-size: 14px;display: block;padding-top: 10px;padding-bottom: 10px;\">\n\t\t{{data.username}}\n\t</div>\n\t<div style=\"font-size: 14px;display: block;padding-top: 10px;padding-bottom: 10px;\">\n\t\t{{data.fullname}}\n\t</div>\n\t<div style=\"display: block; padding-bottom:20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);\">\n\t\t<button mat-raised-button [mat-dialog-close]=\"true\">{{'dlg.logout-btn' | translate}}</button>\n\t</div>\n\t<div style=\"display: block; font-size: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.1);\">\n\t\tGDT-SCADA powered by <span><b>GDT</b></span>\n\t</div>\n</div>";
 
 /***/ }),
 
