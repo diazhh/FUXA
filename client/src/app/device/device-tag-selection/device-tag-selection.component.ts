@@ -222,11 +222,11 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
             });
         }
         
-        // Load tags from ThingsBoard devices (on-demand query)
+        // Load tags from Fuente de datos local devices (on-demand query)
         try {
             const tbDevices: any[] = await this.http.get<any[]>('/api/thingsboard/devices').toPromise();
             if (tbDevices && tbDevices.length > 0) {
-                // For each ThingsBoard device, fetch its telemetry keys
+                // For each Fuente de datos local device, fetch its telemetry keys
                 for (const tbDevice of tbDevices) {
                     const deviceId = tbDevice.id.id;
                     const deviceName = tbDevice.name;
@@ -252,7 +252,7 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
                 }
             }
         } catch (err) {
-            console.error('Failed to load ThingsBoard devices:', err);
+            console.error('Failed to load Fuente de datos local devices:', err);
         }
         
         this.dataSource.data = this.tags;

@@ -83,15 +83,15 @@ export class FlexDeviceTagComponent implements OnInit, OnChanges {
     }
 
     private _setSelectedTag() {
-        // Check if it's a ThingsBoard tag
+        // Check if it's a Fuente de datos local tag
         if (this.variableId && this.variableId.startsWith('tb:')) {
             const parts = this.variableId.split(':');
             if (parts.length === 3) {
-                // Create a virtual tag option for ThingsBoard
+                // Create a virtual tag option for Fuente de datos local
                 const tbTag: DeviceTagOption = {
                     id: this.variableId,
                     name: parts[2], // telemetry key name
-                    device: 'ThingsBoard'
+                    device: 'Fuente de datos local'
                 };
                 this.tagFilter.patchValue(tbTag);
                 return;
@@ -112,11 +112,11 @@ export class FlexDeviceTagComponent implements OnInit, OnChanges {
     }
 
     getDeviceName() {
-        // Check if it's a ThingsBoard tag
+        // Check if it's a Fuente de datos local tag
         if (this.variableId && this.variableId.startsWith('tb:')) {
             const parts = this.variableId.split(':');
             if (parts.length === 3) {
-                return 'ThingsBoard';
+                return 'Fuente de datos local';
             }
         }
         
@@ -135,7 +135,7 @@ export class FlexDeviceTagComponent implements OnInit, OnChanges {
             this.deviceTagValue.variableId = this.tagFilter.value.id;
             this.deviceTagValue.variableRaw = null;
         } else if (this.variableId && this.variableId.startsWith('tb:')) {
-            // ThingsBoard tag - allow without validation
+            // Fuente de datos local tag - allow without validation
             this.deviceTagValue.variableId = this.variableId;
             this.deviceTagValue.variableRaw = null;
         } else {

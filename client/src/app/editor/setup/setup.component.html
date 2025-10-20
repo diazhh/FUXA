@@ -59,14 +59,15 @@
             <div class="separator-line" style="position:absolute;right: 0px"></div>
         </div>
         <div class="btn-cards">
-            <div class="btn-card">
+            <!-- Botón de conexiones oculto por requerimiento -->
+            <!-- <div class="btn-card">
                 <button mat-button (click)="goTo('/device')" class="card-btn">
                     <div class="card-btn-content">
                         <mat-icon>lan</mat-icon>
                         <span>{{'dlg.setup-connections' | translate}}</span>
                     </div>
                 </button>
-            </div>
+            </div> -->
             <div class="btn-card">
                 <button mat-button (click)="goTo('/users')" class="card-btn" [disabled]="isToDisable('users')">
                     <div class="card-btn-content">
