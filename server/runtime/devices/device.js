@@ -17,6 +17,7 @@ var ADSclient = require('./adsclient');
 var GpioClient = require('./gpio');
 var WebCamClient = require('./webcam');
 var MELSECClient = require('./melsec');
+var ThingsBoardClient = require('./thingsboard');
 
 const path = require('path');
 const utils = require('../utils');
@@ -113,6 +114,11 @@ function Device(data, runtime) {
             return null;
         }
         comm = MELSECClient.create(data, logger, events, manager, runtime);
+    } else if (data.type === DeviceEnum.ThingsBoard) {
+        if (!ThingsBoardClient) {
+            return null;
+        }
+        comm = ThingsBoardClient.create(data, logger, events, manager, runtime);
     }
     // else if (data.type === DeviceEnum.Template) {
     //     if (!TEMPLATEclient) {
@@ -530,6 +536,8 @@ function loadPlugin(type, module) {
         GpioClient = require(module);
     } else if (type === DeviceEnum.MELSEC) {
         MELSECClient = require(module);
+    } else if (type === DeviceEnum.ThingsBoard) {
+        ThingsBoardClient = require(module);
     }
 }
 
@@ -571,6 +579,7 @@ var DeviceEnum = {
     internal: 'internal',
     WebCam: 'WebCam',
     MELSEC: 'MELSEC',
+    ThingsBoard: 'ThingsBoard',
     // Template: 'template'
 }
 

@@ -19,6 +19,7 @@ var scriptsApi = require('./scripts');
 var resourcesApi = require('./resources');
 var daqApi = require('./daq');
 var commandApi = require('./command');
+var thingsboardApi = require('./thingsboard');
 const reports = require('../dist/reports.service');
 const reportsApi = new reports.ReportsApiService();
 
@@ -59,6 +60,8 @@ function init(_server, _runtime) {
             apiApp.use(resourcesApi.app());
             commandApi.init(runtime, authJwt.verifyToken, verifyGroups);
             apiApp.use(commandApi.app());
+            thingsboardApi.init(runtime, authJwt.verifyToken, verifyGroups);
+            apiApp.use(thingsboardApi.app());
             reportsApi.init(runtime, authJwt.verifyToken, verifyGroups);
             apiApp.use(reportsApi.app());
 

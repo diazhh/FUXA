@@ -1,4 +1,4 @@
-﻿/* eslint-disable @angular-eslint/component-class-suffix */
+/* eslint-disable @angular-eslint/component-class-suffix */
 import { Component, Inject, OnInit, OnDestroy, AfterViewInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, ElementRef } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA} from '@angular/material/legacy-dialog';
@@ -340,7 +340,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
                     break;
                 }
             }
-            if (!this.currentView) {
+            if (!this.currentView && this.hmi.views && this.hmi.views.length > 0) {
                 this.onSelectView(this.hmi.views[0]);
             }
         }
@@ -1121,6 +1121,13 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveView(this.currentView);
         }
         this.currentView = view;
+        
+        // Check if view is valid before accessing properties
+        if (!this.currentView) {
+            console.warn('onSelectView: view is undefined');
+            return;
+        }
+        
         if (this.currentView.type === ViewType.cards) {
             this.editorMode = EditorModeType.CARDS;
         } else if (this.currentView.type === ViewType.maps) {

@@ -83,6 +83,21 @@ export class FlexDeviceTagComponent implements OnInit, OnChanges {
     }
 
     private _setSelectedTag() {
+        // Check if it's a ThingsBoard tag
+        if (this.variableId && this.variableId.startsWith('tb:')) {
+            const parts = this.variableId.split(':');
+            if (parts.length === 3) {
+                // Create a virtual tag option for ThingsBoard
+                const tbTag: DeviceTagOption = {
+                    id: this.variableId,
+                    name: parts[2], // telemetry key name
+                    device: 'ThingsBoard'
+                };
+                this.tagFilter.patchValue(tbTag);
+                return;
+            }
+        }
+        
         const tag = this._getDeviceTag(this.variableId);
         this.tagFilter.patchValue(tag);
     }
@@ -97,6 +112,14 @@ export class FlexDeviceTagComponent implements OnInit, OnChanges {
     }
 
     getDeviceName() {
+        // Check if it's a ThingsBoard tag
+        if (this.variableId && this.variableId.startsWith('tb:')) {
+            const parts = this.variableId.split(':');
+            if (parts.length === 3) {
+                return 'ThingsBoard';
+            }
+        }
+        
         const device = DevicesUtils.getDeviceFromTagId(this.devices, this.variableId);
         if (device) {
             return device.name;
@@ -110,6 +133,10 @@ export class FlexDeviceTagComponent implements OnInit, OnChanges {
             this.deviceTagValue.variableRaw = null;
         } else if (this.tagFilter.value?.id?.startsWith && this.tagFilter.value.id.startsWith(PlaceholderDevice.id)) {
             this.deviceTagValue.variableId = this.tagFilter.value.id;
+            this.deviceTagValue.variableRaw = null;
+        } else if (this.variableId && this.variableId.startsWith('tb:')) {
+            // ThingsBoard tag - allow without validation
+            this.deviceTagValue.variableId = this.variableId;
             this.deviceTagValue.variableRaw = null;
         } else {
             let tag = DevicesUtils.getTagFromTagId(this.devices, this.variableId);

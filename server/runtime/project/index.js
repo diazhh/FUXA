@@ -725,6 +725,8 @@ function setProject(prjcontent) {
 
 /**
  * Return Devices list
+ * Note: ThingsBoard devices are loaded separately in Device Manager
+ * This returns only locally configured devices
  */
 function getDevices() {
     return data.devices;
@@ -896,6 +898,12 @@ function getMapsLocations() {
  */
 function setDeviceProperty(query) {
     return new Promise(function (resolve, reject) {
+        // Prevent modification of ThingsBoard devices
+        if (query.name && query.name.startsWith('tb_')) {
+            reject({ code: 'forbidden', message: 'ThingsBoard devices cannot be modified from FUXA' });
+            return;
+        }
+        
         if (query.query === 'security') {
             if (!query.value) {
                 resolve();

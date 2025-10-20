@@ -125,6 +125,21 @@ export class FlexVariableComponent implements OnInit {
     }
 
     private _setSelectedTag() {
+        // Check if it's a ThingsBoard tag
+        if (this.variableId && this.variableId.startsWith('tb:')) {
+            const parts = this.variableId.split(':');
+            if (parts.length === 3) {
+                // Create a virtual tag option for ThingsBoard
+                const tbTag: DeviceTagOption = {
+                    id: this.variableId,
+                    name: parts[2], // telemetry key name
+                    device: 'ThingsBoard'
+                };
+                this.tagFilter.patchValue(tbTag);
+                return;
+            }
+        }
+        
         const tag = this._getDeviceTag(this.variableId);
         this.tagFilter.patchValue(tag);
     }
@@ -139,6 +154,14 @@ export class FlexVariableComponent implements OnInit {
     }
 
     getDeviceName() {
+        // Check if it's a ThingsBoard tag
+        if (this.variableId && this.variableId.startsWith('tb:')) {
+            const parts = this.variableId.split(':');
+            if (parts.length === 3) {
+                return 'ThingsBoard';
+            }
+        }
+        
         let device = DevicesUtils.getDeviceFromTagId(this.data.devices || {}, this.variableId);
         if (device) {
             return device.name;
@@ -147,6 +170,14 @@ export class FlexVariableComponent implements OnInit {
     }
 
     getVariableName() {
+        // Check if it's a ThingsBoard tag
+        if (this.variableId && this.variableId.startsWith('tb:')) {
+            const parts = this.variableId.split(':');
+            if (parts.length === 3) {
+                return parts[2]; // Return the telemetry key name
+            }
+        }
+        
         let tag = DevicesUtils.getTagFromTagId(this.data.devices || {}, this.variableId);
         if (tag) {
             let result = tag.label || tag.name;
@@ -174,6 +205,10 @@ export class FlexVariableComponent implements OnInit {
             this.value.variableRaw = null;
         } else if (this.tagFilter.value?.id?.startsWith && this.tagFilter.value.id.startsWith(PlaceholderDevice.id)) {
             this.value.variableId = this.tagFilter.value.id;
+            this.value.variableRaw = null;
+        } else if (this.variableId && this.variableId.startsWith('tb:')) {
+            // ThingsBoard tag - allow without validation
+            this.value.variableId = this.variableId;
             this.value.variableRaw = null;
         } else {
             let tag = DevicesUtils.getTagFromTagId(this.data.devices || {}, this.variableId);

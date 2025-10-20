@@ -16,6 +16,7 @@ var plugins = require('./plugins');
 var utils = require('./utils');
 const daqstorage = require('./storage/daqstorage');
 var jobs = require('./jobs');
+const { ThingsBoardManager } = require('./thingsboard');
 
 var api;
 var settings
@@ -25,9 +26,15 @@ var alarmsMgr;
 var notificatorMgr;
 var scriptsMgr;
 var jobsMgr;
+var thingsBoardMgr;
 var tagsSubscription = new Map();
 var socketPool = new Map();
 var socketMutex = new Map();
+
+// ThingsBoard tag subscriptions and polling
+var tbTagSubscriptions = new Map(); // tagId -> { deviceId, key, lastValue }
+var tbPollingInterval = null;
+var tbPollingActive = false;
 
 function init(_io, _api, _settings, _log, eventsMain) {
     io = _io;
@@ -72,6 +79,23 @@ function init(_io, _api, _settings, _log, eventsMain) {
     notificatorMgr = notificator.create(runtime);
     scriptsMgr = scripts.create(runtime);
     jobsMgr = jobs.create(runtime);
+    
+    // Initialize ThingsBoard Manager as direct gateway (no sync, no storage)
+    thingsBoardMgr = new ThingsBoardManager(settings, logger);
+    thingsBoardMgr.init().then(() => {
+        logger.info('runtime init thingsboard successful!', true);
+        // Auto-start if enabled after initialization completes
+        if (thingsBoardMgr.isEnabled()) {
+            thingsBoardMgr.start().then(() => {
+                logger.info('runtime.thingsboard-gateway-ready', true);
+            }).catch(err => {
+                logger.error(`runtime.failed-to-start-thingsboard: ${err.message}`);
+            });
+        }
+    }).catch(err => {
+        logger.error(`runtime.failed-to-init thingsboard: ${err.message}`);
+    });
+    
     devices.init(runtime);
 
     events.on('project-device:change', updateDevice);
@@ -80,6 +104,9 @@ function init(_io, _api, _settings, _log, eventsMain) {
     events.on('alarms-status:changed', updateAlarmsStatus);
     events.on('tag-change:subscription', subscriptionTagChange);
     events.on('script-console', scriptConsoleOutput);
+
+    // Start ThingsBoard polling
+    startThingsBoardPolling();
 
     io.on('connection', async (socket) => {
         logger.info(`socket.io client connected ${socket.id}`);
@@ -108,6 +135,15 @@ function init(_io, _api, _settings, _log, eventsMain) {
 
         socket.on('disconnect', (reason) => {
             logger.info('socket.io disconnection:', socket.id, 'reason', reason);
+            
+            // Remove ThingsBoard subscriptions for this socket
+            if (socket.tagsClientSubscriptions && Array.isArray(socket.tagsClientSubscriptions)) {
+                for (const tagId of socket.tagsClientSubscriptions) {
+                    if (tagId && tagId.startsWith('tb:')) {
+                        tbTagSubscriptions.delete(tagId);
+                    }
+                }
+            }
         });
 
         // client ask device status
@@ -305,11 +341,36 @@ function init(_io, _api, _settings, _log, eventsMain) {
         socket.on(Events.IoEventTypes.DEVICE_TAGS_SUBSCRIBE, (message) => {
             try {
                 socket.tagsClientSubscriptions = message.tagsId
+                
+                logger.info(`runtime: received tag subscription with ${message.tagsId ? message.tagsId.length : 0} tags`, true);
+                
+                // Track ThingsBoard tags
+                if (message.tagsId && Array.isArray(message.tagsId)) {
+                    for (const tagId of message.tagsId) {
+                        if (tagId && tagId.startsWith('tb:')) {
+                            const parts = tagId.split(':');
+                            if (parts.length === 3) {
+                                tbTagSubscriptions.set(tagId, {
+                                    deviceId: parts[1],
+                                    key: parts[2],
+                                    lastValue: null
+                                });
+                                logger.info(`runtime: subscribed to ThingsBoard tag ${tagId}`, true);
+                            }
+                        }
+                    }
+                }
+                
+                logger.info(`runtime: total ThingsBoard subscriptions: ${tbTagSubscriptions.size}`, true);
+                
                 if (message.sendLastValue) {
                     var adevs = devices.getDevicesValues();
                     for (var id in adevs) {
                         updateDeviceValues({ id: id, values: adevs[id] });
                     }
+                    
+                    // Send initial values for ThingsBoard tags
+                    sendThingsBoardInitialValues();
                 }
             } catch (err) {
                 logger.error(`${Events.IoEventTypes.DEVICE_TAGS_SUBSCRIBE}: ${err}`);
@@ -374,6 +435,8 @@ function start() {
                 logger.error('runtime.failed-to-start-jobs: ' + err);
                 reject();
             });
+            // ThingsBoard manager auto-starts after initialization
+            // No need to start here as it's already started in init callback
         }).catch(function (err) {
             logger.error('runtime.failed-to-start: ' + err);
             reject();
@@ -403,6 +466,14 @@ function stop() {
         }).catch(function (err) {
             logger.error('runtime.failed-to-stop-jobsMgr: ' + err);
         });
+        if (thingsBoardMgr) {
+            try {
+                thingsBoardMgr.stop();
+                logger.info('runtime.thingsboard-stopped', true);
+            } catch (err) {
+                logger.error('runtime.failed-to-stop-thingsboard: ' + err);
+            }
+        }
         resolve(true);
     });
 }
@@ -656,6 +727,148 @@ function checkPermission(userPermission, context, forceUndefined = false, onlyWi
     return result;
 }
 
+/**
+ * Start ThingsBoard polling for subscribed tags
+ */
+function startThingsBoardPolling() {
+    if (tbPollingInterval) {
+        return; // Already running
+    }
+    
+    tbPollingInterval = setInterval(async () => {
+        if (tbPollingActive || tbTagSubscriptions.size === 0) {
+            return;
+        }
+        
+        tbPollingActive = true;
+        
+        try {
+            logger.info(`runtime: polling ${tbTagSubscriptions.size} ThingsBoard tags`, true);
+            
+            // Group tags by device to minimize API calls
+            const deviceTags = new Map(); // deviceId -> [keys]
+            for (const [tagId, info] of tbTagSubscriptions) {
+                if (!deviceTags.has(info.deviceId)) {
+                    deviceTags.set(info.deviceId, []);
+                }
+                deviceTags.get(info.deviceId).push(info.key);
+            }
+            
+            // Query each device
+            for (const [deviceId, keys] of deviceTags) {
+                try {
+                    if (!thingsBoardMgr || !thingsBoardMgr.isEnabled()) {
+                        logger.warn(`runtime: ThingsBoard manager not enabled`, true);
+                        continue;
+                    }
+                    
+                    const telemetry = await thingsBoardMgr.getLatestTelemetry(deviceId, keys);
+                    logger.info(`runtime: received telemetry for device ${deviceId}: ${JSON.stringify(telemetry)}`, true);
+                    
+                    for (const key of keys) {
+                        if (telemetry && telemetry[key] && telemetry[key].length > 0) {
+                            const data = telemetry[key][0];
+                            const tagId = `tb:${deviceId}:${key}`;
+                            const info = tbTagSubscriptions.get(tagId);
+                            
+                            if (info) {
+                                const newValue = data.value;
+                                const changed = info.lastValue !== newValue;
+                                logger.info(`runtime: tag ${tagId} - old: ${info.lastValue}, new: ${newValue}, changed: ${changed}`, true);
+                                info.lastValue = newValue;
+                                
+                                // Always emit, not just on change (for initial value)
+                                const values = {};
+                                values[tagId] = {
+                                    id: tagId,
+                                    value: newValue,
+                                    ts: data.ts,
+                                    daq: false
+                                };
+                                
+                                logger.info(`runtime: emitting value for ${tagId} = ${newValue}`, true);
+                                events.emit('device-value:changed', {
+                                    id: 'thingsboard',
+                                    values: values
+                                });
+                            }
+                        } else {
+                            logger.warn(`runtime: no telemetry data for ${deviceId}:${key}`, true);
+                        }
+                    }
+                } catch (err) {
+                    logger.error(`runtime: failed to poll ThingsBoard device ${deviceId}! ${err.message}`);
+                }
+            }
+        } catch (err) {
+            logger.error(`runtime: ThingsBoard polling error! ${err.message}`);
+        } finally {
+            tbPollingActive = false;
+        }
+    }, 1000); // Poll every 1 second
+    
+    logger.info('runtime: ThingsBoard polling started (1s interval)', true);
+}
+
+/**
+ * Send initial values for ThingsBoard tags
+ */
+async function sendThingsBoardInitialValues() {
+    if (tbTagSubscriptions.size === 0) {
+        return;
+    }
+    
+    try {
+        // Group tags by device
+        const deviceTags = new Map();
+        for (const [tagId, info] of tbTagSubscriptions) {
+            if (!deviceTags.has(info.deviceId)) {
+                deviceTags.set(info.deviceId, []);
+            }
+            deviceTags.get(info.deviceId).push(info.key);
+        }
+        
+        // Query each device
+        for (const [deviceId, keys] of deviceTags) {
+            try {
+                if (!thingsBoardMgr || !thingsBoardMgr.isEnabled()) {
+                    continue;
+                }
+                
+                const telemetry = await thingsBoardMgr.getLatestTelemetry(deviceId, keys);
+                const values = {};
+                
+                for (const key of keys) {
+                    if (telemetry && telemetry[key] && telemetry[key].length > 0) {
+                        const data = telemetry[key][0];
+                        const tagId = `tb:${deviceId}:${key}`;
+                        const info = tbTagSubscriptions.get(tagId);
+                        
+                        if (info) {
+                            info.lastValue = data.value;
+                            values[tagId] = {
+                                id: tagId,
+                                value: data.value,
+                                ts: data.ts,
+                                daq: false
+                            };
+                        }
+                    }
+                }
+                
+                // Send values to frontend
+                if (Object.keys(values).length > 0) {
+                    updateDeviceValues({ id: 'thingsboard', values: values });
+                }
+            } catch (err) {
+                logger.error(`runtime: failed to get initial ThingsBoard values for device ${deviceId}! ${err.message}`);
+            }
+        }
+    } catch (err) {
+        logger.error(`runtime: failed to send ThingsBoard initial values! ${err.message}`);
+    }
+}
+
 var runtime = module.exports = {
     init: init,
     project: project,
@@ -675,6 +888,7 @@ var runtime = module.exports = {
     get notificatorMgr() { return notificatorMgr },
     get scriptsMgr() { return scriptsMgr },
     get jobsMgr() { return jobsMgr },
+    get thingsboard() { return thingsBoardMgr },
     events: events,
     scriptSendCommand: scriptSendCommand,
     checkPermissionEnabled: checkPermissionEnabled,

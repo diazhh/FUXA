@@ -172,6 +172,14 @@ module.exports = {
                 res.status(401).json({error:"unauthorized_error", message: "Unauthorized!"});
                 runtime.logger.error("api post device: Unauthorized");
             } else {
+                // Check if trying to modify a ThingsBoard device
+                const deviceData = req.body.params;
+                if (deviceData && (deviceData.type === 'ThingsBoard' || deviceData.source === 'thingsboard' || (deviceData.id && deviceData.id.startsWith('tb_')))) {
+                    res.status(403).json({error:"forbidden", message: "ThingsBoard devices cannot be modified from FUXA. Manage them in ThingsBoard."});
+                    runtime.logger.error("api post device: Attempt to modify ThingsBoard device");
+                    return;
+                }
+                
                 runtime.project.setDeviceProperty(req.body.params).then(function(data) {
                     res.end();
                 }).catch(function(err) {

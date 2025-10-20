@@ -9,6 +9,7 @@ import { ProjectService } from '../../_services/project.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Utils } from '../../_helpers/utils';
 import { TagPropertyService } from '../tag-property/tag-property.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-device-tag-selection',
@@ -39,6 +40,7 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
     constructor(public dialogRef: MatDialogRef<DeviceTagSelectionComponent>,
         private projectService: ProjectService,
         private tagPropertyService: TagPropertyService,
+        private http: HttpClient,
         @Inject(MAT_DIALOG_DATA) public data: DeviceTagSelectionData) {
         this.loadDevicesTags();
     }
@@ -183,9 +185,11 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
         return !this.deviceTagNotEditable.includes(type);
     }
 
-    private loadDevicesTags(newTag?: Tag, deviceName?: string) {
+    private async loadDevicesTags(newTag?: Tag, deviceName?: string) {
         this.tags = [];
         this.devices = Object.values(this.projectService.getDevices());
+        
+        // Load tags from project devices (Modbus, OPC UA, etc.)
         if (this.devices) {
             this.devices.forEach((device: Device) => {
                 if (this.data.deviceFilter && this.data.deviceFilter.indexOf(device.type) !== -1) {
@@ -215,9 +219,42 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
                         });
                     }
                 }
-            }
-            );
+            });
         }
+        
+        // Load tags from ThingsBoard devices (on-demand query)
+        try {
+            const tbDevices: any[] = await this.http.get<any[]>('/api/thingsboard/devices').toPromise();
+            if (tbDevices && tbDevices.length > 0) {
+                // For each ThingsBoard device, fetch its telemetry keys
+                for (const tbDevice of tbDevices) {
+                    const deviceId = tbDevice.id.id;
+                    const deviceName = tbDevice.name;
+                    
+                    try {
+                        const keys: string[] = await this.http.get<string[]>(`/api/thingsboard/device/${deviceId}/keys`).toPromise();
+                        if (keys && keys.length > 0) {
+                            // Create a tag for each telemetry key
+                            keys.forEach((key: string) => {
+                                this.tags.push(<TagElement> {
+                                    id: `tb:${deviceId}:${key}`,
+                                    name: key,
+                                    address: deviceId,
+                                    device: `TB:${deviceName}`,
+                                    checked: false,
+                                    error: null
+                                });
+                            });
+                        }
+                    } catch (err) {
+                        console.error(`Failed to load telemetry keys for device ${deviceName}:`, err);
+                    }
+                }
+            }
+        } catch (err) {
+            console.error('Failed to load ThingsBoard devices:', err);
+        }
+        
         this.dataSource.data = this.tags;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

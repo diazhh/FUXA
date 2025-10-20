@@ -119,6 +119,11 @@ function load() {
     var tempdevices = runtime.project.getDevices();
     activeDevices = {};
     runtime.daqStorage.reset();
+    
+    // ThingsBoard devices are NOT loaded here
+    // They are queried on-demand when needed
+    // This ensures ThingsBoard is the single source of truth
+    
     // check existing or to add new
     for (var id in tempdevices) {
         if (tempdevices[id].enabled) {
@@ -215,8 +220,39 @@ function getDeviceValue(deviceid, sigid) {
  * @param {*} sigid
  * @param {*} fully, struct with timestamp
  */
- function getTagValue(sigid, fully) {
+ async function getTagValue(sigid, fully) {
      try {
+        // Check if it's a ThingsBoard tag (format: tb:{deviceId}:{key})
+        if (sigid && sigid.startsWith('tb:')) {
+            const parts = sigid.split(':');
+            if (parts.length === 3) {
+                const deviceId = parts[1];
+                const key = parts[2];
+                
+                if (runtime.thingsboard && runtime.thingsboard.isEnabled()) {
+                    try {
+                        const telemetry = await runtime.thingsboard.getLatestTelemetry(deviceId, [key]);
+                        if (telemetry && telemetry[key] && telemetry[key].length > 0) {
+                            const data = telemetry[key][0];
+                            if (fully) {
+                                return {
+                                    id: sigid,
+                                    value: data.value,
+                                    ts: data.ts,
+                                    daq: false
+                                };
+                            } else {
+                                return data.value;
+                            }
+                        }
+                    } catch (err) {
+                        runtime.logger.error(`devices: failed to get ThingsBoard tag value! ${err.message}`);
+                    }
+                }
+            }
+            return null;
+        }
+        
         let deviceid = getDeviceIdFromTag(sigid)
         if (activeDevices[deviceid]) {
             let result = activeDevices[deviceid].getValue(sigid);
@@ -263,6 +299,27 @@ function getTagId(tagName, deviceName) {
  */
 async function setTagValue(tagid, value) {
     try {
+        // Check if it's a ThingsBoard tag (format: tb:{deviceId}:{key})
+        if (tagid && tagid.startsWith('tb:')) {
+            const parts = tagid.split(':');
+            if (parts.length === 3) {
+                const deviceId = parts[1];
+                const key = parts[2];
+                
+                if (runtime.thingsboard && runtime.thingsboard.isEnabled()) {
+                    try {
+                        const telemetry = { [key]: value };
+                        await runtime.thingsboard.sendTelemetry(deviceId, telemetry);
+                        return true;
+                    } catch (err) {
+                        runtime.logger.error(`devices: failed to set ThingsBoard tag value! ${err.message}`);
+                        throw err;
+                    }
+                }
+            }
+            return null;
+        }
+        
         let deviceid = getDeviceIdFromTag(tagid)
         if (activeDevices[deviceid]) {
             return  await activeDevices[deviceid].setValue(tagid, value);
@@ -388,6 +445,11 @@ function getDevice(deviceName, asInterface) {
  * @param {*} sigid
  */
  function getDeviceIdFromTag(sigid) {
+    // Check if it's a ThingsBoard tag (format: tb:{deviceId}:{key})
+    if (sigid && sigid.startsWith('tb:')) {
+        return 'thingsboard'; // Virtual device ID for ThingsBoard
+    }
+    
     for (var id in activeDevices) {
         var tag = activeDevices[id].getTagProperty(sigid);
         if (tag) {
