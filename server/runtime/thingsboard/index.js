@@ -179,6 +179,21 @@ class ThingsBoardManager {
     }
 
     /**
+     * Get telemetry history for charts (on-demand query)
+     */
+    async getTelemetryHistory(deviceId, keys, startTs, endTs, limit = 1000) {
+        if (!this.client) {
+            return {};
+        }
+        try {
+            return await this.client.getTelemetryHistory(deviceId, keys, startTs, endTs, limit);
+        } catch (err) {
+            this.logger.error(`thingsboard: failed to fetch telemetry history! ${err.message}`);
+            return {};
+        }
+    }
+
+    /**
      * Get configuration
      */
     getConfiguration() {

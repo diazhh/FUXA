@@ -196,7 +196,7 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
                     // filtered device
                 } else if (device.tags) {
                     if (this.data.isHistorical) {
-                        Object.values(device.tags).filter((t: Tag) => t.daq.enabled).forEach((t: Tag) => {
+                        Object.values(device.tags).filter((t: Tag) => t.daq?.enabled).forEach((t: Tag) => {
                             this.tags.push(<TagElement> {
                                 id: t.id,
                                 name: t.name,
@@ -222,26 +222,33 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
             });
         }
         
-        // Load tags from Fuente de datos local devices (on-demand query)
+        // Load tags from ThingsBoard devices (on-demand query)
         try {
             const tbDevices: any[] = await this.http.get<any[]>('/api/thingsboard/devices').toPromise();
+            console.log('ThingsBoard devices loaded:', tbDevices);
+            
             if (tbDevices && tbDevices.length > 0) {
-                // For each Fuente de datos local device, fetch its telemetry keys
+                // For each ThingsBoard device, fetch its telemetry keys
                 for (const tbDevice of tbDevices) {
-                    const deviceId = tbDevice.id.id;
+                    const deviceId = tbDevice.id?.id || tbDevice.id;
                     const deviceName = tbDevice.name;
+                    
+                    console.log(`Loading telemetry keys for device: ${deviceName} (${deviceId})`);
                     
                     try {
                         const keys: string[] = await this.http.get<string[]>(`/api/thingsboard/device/${deviceId}/keys`).toPromise();
+                        console.log(`Telemetry keys for ${deviceName}:`, keys);
+                        
                         if (keys && keys.length > 0) {
                             // Create a tag for each telemetry key
                             keys.forEach((key: string) => {
+                                const tagId = `tb:${deviceId}:${key}`;
                                 this.tags.push(<TagElement> {
-                                    id: `tb:${deviceId}:${key}`,
+                                    id: tagId,
                                     name: key,
                                     address: deviceId,
                                     device: `TB:${deviceName}`,
-                                    checked: false,
+                                    checked: (tagId === this.data.variableId),
                                     error: null
                                 });
                             });
@@ -252,8 +259,10 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
                 }
             }
         } catch (err) {
-            console.error('Failed to load Fuente de datos local devices:', err);
+            console.error('Failed to load ThingsBoard devices:', err);
         }
+        
+        console.log('Total tags loaded:', this.tags.length);
         
         this.dataSource.data = this.tags;
         this.dataSource.paginator = this.paginator;

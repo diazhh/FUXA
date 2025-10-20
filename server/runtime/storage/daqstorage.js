@@ -59,7 +59,67 @@ function addDaqNode(_id, fncgetprop) {
 }
 
 function getNodeValues(tagid, fromts, tots) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(async function (resolve, reject) {
+        // Check if this is a ThingsBoard tag (format: tb:deviceId:key)
+        if (tagid.startsWith('tb:')) {
+            try {
+                const parts = tagid.split(':');
+                if (parts.length === 3) {
+                    const deviceId = parts[1];
+                    const key = parts[2];
+                    
+                    if (runtime && runtime.thingsboard && runtime.thingsboard.isEnabled()) {
+                        // Fetch ALL data in the time range - no limit
+                        // The ThingsBoard client will make multiple queries if needed
+                        const timeRangeMs = tots - fromts;
+                        const timeRangeHours = timeRangeMs / (60 * 60 * 1000);
+                        const timeRangeDays = timeRangeMs / (24 * 60 * 60 * 1000);
+                        
+                        logger.info(`daqstorage: requesting ALL data from ThingsBoard for ${tagid}, range: ${timeRangeHours.toFixed(2)} hours (${timeRangeDays.toFixed(2)} days)`);
+                        
+                        // Pass a large limit - the client will fetch all data iteratively
+                        const history = await runtime.thingsboard.getTelemetryHistory(
+                            deviceId, 
+                            [key], 
+                            fromts, 
+                            tots, 
+                            999999 // Large number to signal "get all data"
+                        );
+                        
+                        // Convert ThingsBoard format to DAQ format
+                        if (history && history[key]) {
+                            const values = history[key].map(item => ({
+                                dt: item.ts,
+                                value: parseFloat(item.value)
+                            }));
+                            
+                            // Log statistics
+                            if (values.length > 0) {
+                                const firstTs = new Date(values[0].dt);
+                                const lastTs = new Date(values[values.length - 1].dt);
+                                const dataRangeHours = (values[values.length - 1].dt - values[0].dt) / (60 * 60 * 1000);
+                                const avgPointsPerHour = values.length / dataRangeHours;
+                                logger.info(`daqstorage: received ${values.length} data points for ${tagid}, covering ${dataRangeHours.toFixed(2)} hours (${avgPointsPerHour.toFixed(0)} points/hour)`);
+                                logger.info(`daqstorage: time range: ${firstTs.toISOString()} to ${lastTs.toISOString()}`);
+                            } else {
+                                logger.warn(`daqstorage: no data received for ${tagid}`);
+                            }
+                            
+                            resolve(values);
+                            return;
+                        } else {
+                            logger.warn(`daqstorage: no history data for key ${key} in response`);
+                        }
+                    }
+                }
+            } catch (err) {
+                logger.error(`daqstorage: failed to get ThingsBoard history for ${tagid}! ${err.message}`);
+            }
+            resolve([]);
+            return;
+        }
+        
+        // Regular DAQ node handling
         var daqnode = _getDaqNode(tagid);
         if (daqnode) {
             resolve(daqnode.getDaqValue(tagid, fromts, tots));

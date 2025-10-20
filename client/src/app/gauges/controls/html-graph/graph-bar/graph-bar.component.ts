@@ -86,23 +86,30 @@ export class GraphBarComponent extends GraphBaseComponent implements OnInit, Aft
     }
 
     init(title: string, property: GraphBarProperty, sources?: GraphSource[]) {
+        console.log('init - sources:', sources);
         this.title = title;
         this.property = property;
         if (sources) {
+            console.log('init - sources no vacíos:', sources);
             this.setSources(sources);
+        } else {
+            console.log('init - sources vacíos');
         }
     }
 
     setSources(sources: GraphSource[]) {
+        console.log('setSources - sources:', sources);
         this.sourceMap = {};
         this.barChartData = [];
         for (let i = 0; i < sources.length; i++) {
+            console.log(`  Source ${i}: id=${sources[i].id}, label=${sources[i].label}, device=${sources[i].device}`);
             let dataset = <ChartDataset>{ label: sources[i].label, data: [], backgroundColor: [sources[i].fill], borderColor: [sources[i].color],
                 hoverBackgroundColor: [sources[i].fill], hoverBorderColor: [sources[i].color] };
             this.sourceMap[sources[i].id] = dataset;
             this.barChartData.push(dataset);
         }
         this.sourceCount = sources.length;
+        console.log('setSources - sourceMap keys:', Object.keys(this.sourceMap));
     }
 
     setOptions(options: GraphOptions): void {
@@ -298,6 +305,8 @@ export class GraphBarComponent extends GraphBaseComponent implements OnInit, Aft
             }
         }
         query.sids = Object.keys(this.sourceMap);
+        console.log('GraphBarComponent.getQuery - sourceMap keys:', Object.keys(this.sourceMap));
+        console.log('GraphBarComponent.getQuery - query.sids:', query.sids);
         return query;
     }
 

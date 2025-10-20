@@ -136,20 +136,44 @@ export class ChartConfigComponent implements OnInit {
                     tagsId.push(result.variableId);
                 }
                 tagsId.forEach(id => {
-                    let device = DevicesUtils.getDeviceFromTagId(this.data.devices, id);
-                    let tag = DevicesUtils.getTagFromTagId([device], id);
-                    if (tag) {
-                        let exist = chart.lines.find(line => line.id === tag.id);
-                        if (!exist) {
-                            const myCopiedObject = <ChartLine>{
-                                id: tag.id,
-                                name: this.getTagLabel(tag),
-                                device: device.name,
-                                color: this.getNextColor(),
-                                label: this.getTagLabel(tag), yaxis: 1,
-                                spanGaps: true
-                            };
-                            chart.lines.push(myCopiedObject);
+                    // Check if this is a ThingsBoard tag
+                    if (id.startsWith('tb:')) {
+                        const parts = id.split(':');
+                        if (parts.length === 3) {
+                            const deviceId = parts[1];
+                            const key = parts[2];
+                            
+                            let exist = chart.lines.find(line => line.id === id);
+                            if (!exist) {
+                                const myCopiedObject = <ChartLine>{
+                                    id: id,
+                                    name: key,
+                                    device: `TB:${deviceId}`,
+                                    color: this.getNextColor(),
+                                    label: key,
+                                    yaxis: 1,
+                                    spanGaps: true
+                                };
+                                chart.lines.push(myCopiedObject);
+                            }
+                        }
+                    } else {
+                        // Regular device tag
+                        let device = DevicesUtils.getDeviceFromTagId(this.data.devices, id);
+                        let tag = DevicesUtils.getTagFromTagId([device], id);
+                        if (tag) {
+                            let exist = chart.lines.find(line => line.id === tag.id);
+                            if (!exist) {
+                                const myCopiedObject = <ChartLine>{
+                                    id: tag.id,
+                                    name: this.getTagLabel(tag),
+                                    device: device.name,
+                                    color: this.getNextColor(),
+                                    label: this.getTagLabel(tag), yaxis: 1,
+                                    spanGaps: true
+                                };
+                                chart.lines.push(myCopiedObject);
+                            }
                         }
                     }
                 });
@@ -233,6 +257,16 @@ export class ChartConfigComponent implements OnInit {
         if (line.device === '@') {
             return line.name;
         }
+        
+        // Handle ThingsBoard tags (format: tb:deviceId:key)
+        if (line.id && line.id.startsWith('tb:')) {
+            const parts = line.id.split(':');
+            if (parts.length === 3) {
+                return parts[2]; // Return the key name
+            }
+            return line.name || line.label || '';
+        }
+        
         let devices = this.data.devices.filter(x => x.name === line.device);
         if (devices && devices.length > 0) {
             let tags = Object.values<Tag>(devices[0].tags);
@@ -242,7 +276,7 @@ export class ChartConfigComponent implements OnInit {
                 }
             }
         }
-        return '';
+        return line.name || line.label || '';
     }
 
     getNextColor() {

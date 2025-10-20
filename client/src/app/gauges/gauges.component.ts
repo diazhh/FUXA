@@ -937,10 +937,13 @@ export class GaugesManager {
     }
 
     private setGraphPropety(gauge: GraphBaseComponent, property: any, targetSignalsId?: Record<string, string>) {
+        console.log('setGraphPropety - property:', property);
         if (property) {
             if (property.id) {
                 let graph = this.hmiService.getGraph(property.id);
+                console.log('setGraphPropety - graph:', graph);
                 if (graph) {
+                    console.log('setGraphPropety - graph.sources:', graph.sources);
                     gauge.init(graph.name, graph.property, graph.sources);
                     // check for placeholder
                     if ('sourceMap' in gauge && targetSignalsId) {

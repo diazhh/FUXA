@@ -241,7 +241,9 @@ class ThingsBoardClient extends EventEmitter {
     }
 
     /**
-     * Get telemetry history
+     * Get telemetry history - fetches ALL data in the time range
+     * ThingsBoard has a hard limit of 1000 records per query
+     * We make multiple queries until we get all data in the range
      */
     async getTelemetryHistory(deviceId, keys, startTs, endTs, limit = 100) {
         try {
@@ -252,24 +254,85 @@ class ThingsBoardClient extends EventEmitter {
             const baseUrl = `${this.config.protocol}://${this.config.host}:${this.config.port}`;
             const url = `${baseUrl}/api/plugins/telemetry/DEVICE/${deviceId}/values/timeseries`;
             
-            const response = await this.axiosInstance.get(url, {
-                params: {
+            // ThingsBoard has a hard limit of 1000 records per query
+            const TB_MAX_LIMIT = 1000;
+            const timeRangeMs = endTs - startTs;
+            const timeRangeHours = timeRangeMs / 3600000;
+            
+            this.logger.info(`thingsboard-client: fetching ALL data for device ${deviceId}, range: ${timeRangeHours.toFixed(2)}h (${new Date(startTs).toISOString()} to ${new Date(endTs).toISOString()})`);
+            
+            let allData = {};
+            let currentStart = startTs;
+            let iteration = 0;
+            const maxIterations = 100; // Safety limit to prevent infinite loops
+            
+            // Keep querying until we reach the end time or get no more data
+            while (currentStart < endTs && iteration < maxIterations) {
+                iteration++;
+                
+                const params = {
                     keys: keys.join(','),
-                    startTs,
-                    endTs,
-                    limit
+                    startTs: currentStart,
+                    endTs: endTs,
+                    limit: TB_MAX_LIMIT,
+                    orderBy: 'ASC'
+                };
+                
+                this.logger.info(`thingsboard-client: query iteration ${iteration}, from ${new Date(currentStart).toISOString()}`);
+                
+                const response = await this.axiosInstance.get(url, { params });
+                
+                if (!response.data) {
+                    break;
                 }
-            });
-
-            if (response.data) {
-                return response.data;
+                
+                let hasData = false;
+                let lastTimestamp = currentStart;
+                
+                // Merge data from this query
+                for (const key of keys) {
+                    if (response.data[key] && response.data[key].length > 0) {
+                        hasData = true;
+                        
+                        if (!allData[key]) {
+                            allData[key] = [];
+                        }
+                        
+                        // Add data points
+                        allData[key] = allData[key].concat(response.data[key]);
+                        
+                        // Get the last timestamp to continue from there
+                        const lastPoint = response.data[key][response.data[key].length - 1];
+                        if (lastPoint.ts > lastTimestamp) {
+                            lastTimestamp = lastPoint.ts;
+                        }
+                    }
+                }
+                
+                // If we got less than the limit, we've reached the end
+                const firstKey = keys[0];
+                if (!hasData || (response.data[firstKey] && response.data[firstKey].length < TB_MAX_LIMIT)) {
+                    this.logger.info(`thingsboard-client: reached end of data at iteration ${iteration}`);
+                    break;
+                }
+                
+                // Move to next chunk, starting from 1ms after the last timestamp
+                currentStart = lastTimestamp + 1;
             }
-
-            return {};
+            
+            const totalPoints = allData[keys[0]]?.length || 0;
+            this.logger.info(`thingsboard-client: fetched ${totalPoints} total points in ${iteration} iterations`);
+            
+            return allData;
+            
         } catch (err) {
             if (err.response?.status === 401) {
                 await this.refreshAuthToken();
                 return await this.getTelemetryHistory(deviceId, keys, startTs, endTs, limit);
+            }
+            
+            if (err.response?.status === 400) {
+                this.logger.error(`thingsboard-client: bad request for device ${deviceId}`);
             }
             
             this.logger.error(`thingsboard-client: failed to get telemetry history for device ${deviceId}! ${err.message}`);

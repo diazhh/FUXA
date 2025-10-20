@@ -72,6 +72,7 @@ export class GraphPieComponent extends GraphBaseComponent implements OnInit, Aft
     }
 
     init(title: string, property: any, sources?: GraphSource[]) {
+        console.log('GraphPieComponent.init - sources:', sources);
         this.title = title;
         this.property = property;
         if (sources) {
@@ -80,12 +81,14 @@ export class GraphPieComponent extends GraphBaseComponent implements OnInit, Aft
     }
 
     setSources(sources: GraphSource[]) {
+        console.log('GraphPieComponent.setSources - sources:', sources);
         this.sourceMap = {};
         let labels = [];
         this.pieData = [];
         let backgroundColor = [];
 
         for (let i = 0; i < sources.length; i++) {
+            console.log(`  Source ${i}: id=${sources[i].id}, label=${sources[i].label}, device=${sources[i].device}`);
             labels.push(sources[i].label || sources[i].name);
             this.pieData.push((i + 1) * 10);
             backgroundColor.push(sources[i].fill);
@@ -96,6 +99,7 @@ export class GraphPieComponent extends GraphBaseComponent implements OnInit, Aft
             data: this.pieData,
             backgroundColor: backgroundColor,
         }];
+        console.log('GraphPieComponent.setSources - sourceMap keys:', Object.keys(this.sourceMap));
     }
 
     resize(height?, width?) {

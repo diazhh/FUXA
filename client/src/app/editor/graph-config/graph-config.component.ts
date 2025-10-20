@@ -120,15 +120,39 @@ export class GraphConfigComponent implements OnInit {
                     tagsId.push(result.variableId);
                 }
                 tagsId.forEach(id => {
-                    let device = DevicesUtils.getDeviceFromTagId(this.data.devices, id);
-                    let tag = DevicesUtils.getTagFromTagId([device], id);
-                    if (tag) {
-                        let exist = graph.sources.find(source => source.id === tag.id);
-                        if (!exist) {
-                            let color = this.getNextColor();
-                            const myCopiedObject: GraphSource = {id: tag.id, name: this.getTagLabel(tag), device: device.name,
-                                label: this.getTagLabel(tag), color: color, fill: color };
-                            graph.sources.push(myCopiedObject);
+                    // Check if this is a ThingsBoard tag
+                    if (id.startsWith('tb:')) {
+                        const parts = id.split(':');
+                        if (parts.length === 3) {
+                            const deviceId = parts[1];
+                            const key = parts[2];
+                            
+                            let exist = graph.sources.find(source => source.id === id);
+                            if (!exist) {
+                                let color = this.getNextColor();
+                                const myCopiedObject: GraphSource = {
+                                    id: id,
+                                    name: key,
+                                    device: `TB:${deviceId}`,
+                                    label: key,
+                                    color: color,
+                                    fill: color
+                                };
+                                graph.sources.push(myCopiedObject);
+                            }
+                        }
+                    } else {
+                        // Regular device tag
+                        let device = DevicesUtils.getDeviceFromTagId(this.data.devices, id);
+                        let tag = DevicesUtils.getTagFromTagId([device], id);
+                        if (tag) {
+                            let exist = graph.sources.find(source => source.id === tag.id);
+                            if (!exist) {
+                                let color = this.getNextColor();
+                                const myCopiedObject: GraphSource = {id: tag.id, name: this.getTagLabel(tag), device: device.name,
+                                    label: this.getTagLabel(tag), color: color, fill: color };
+                                graph.sources.push(myCopiedObject);
+                            }
                         }
                     }
                 });
@@ -250,6 +274,16 @@ export class GraphConfigComponent implements OnInit {
         if (source.device === '@') {
             return source.name;
         }
+        
+        // Handle ThingsBoard tags (format: tb:deviceId:key)
+        if (source.id && source.id.startsWith('tb:')) {
+            const parts = source.id.split(':');
+            if (parts.length === 3) {
+                return parts[2]; // Return the key name
+            }
+            return source.name || source.label || '';
+        }
+        
         let devices = this.data.devices.filter(x => x.name === source.device);
         if (devices && devices.length > 0) {
             let tags = Object.values<Tag>(devices[0].tags);
@@ -259,7 +293,7 @@ export class GraphConfigComponent implements OnInit {
                 }
             }
         }
-        return '';
+        return source.name || source.label || '';
     }
 
     getNextColor() {

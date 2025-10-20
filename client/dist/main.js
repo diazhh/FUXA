@@ -15922,7 +15922,7 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
             // filtered device
           } else if (device.tags) {
             if (_this.data.isHistorical) {
-              Object.values(device.tags).filter(t => t.daq.enabled).forEach(t => {
+              Object.values(device.tags).filter(t => t.daq?.enabled).forEach(t => {
                 _this.tags.push({
                   id: t.id,
                   name: t.name,
@@ -15947,25 +15947,29 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
           }
         });
       }
-      // Load tags from Fuente de datos local devices (on-demand query)
+      // Load tags from ThingsBoard devices (on-demand query)
       try {
         const tbDevices = yield _this.http.get('/api/thingsboard/devices').toPromise();
+        console.log('ThingsBoard devices loaded:', tbDevices);
         if (tbDevices && tbDevices.length > 0) {
-          // For each Fuente de datos local device, fetch its telemetry keys
+          // For each ThingsBoard device, fetch its telemetry keys
           for (const tbDevice of tbDevices) {
-            const deviceId = tbDevice.id.id;
+            const deviceId = tbDevice.id?.id || tbDevice.id;
             const deviceName = tbDevice.name;
+            console.log(`Loading telemetry keys for device: ${deviceName} (${deviceId})`);
             try {
               const keys = yield _this.http.get(`/api/thingsboard/device/${deviceId}/keys`).toPromise();
+              console.log(`Telemetry keys for ${deviceName}:`, keys);
               if (keys && keys.length > 0) {
                 // Create a tag for each telemetry key
                 keys.forEach(key => {
+                  const tagId = `tb:${deviceId}:${key}`;
                   _this.tags.push({
-                    id: `tb:${deviceId}:${key}`,
+                    id: tagId,
                     name: key,
                     address: deviceId,
                     device: `TB:${deviceName}`,
-                    checked: false,
+                    checked: tagId === _this.data.variableId,
                     error: null
                   });
                 });
@@ -15976,8 +15980,9 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
           }
         }
       } catch (err) {
-        console.error('Failed to load Fuente de datos local devices:', err);
+        console.error('Failed to load ThingsBoard devices:', err);
       }
+      console.log('Total tags loaded:', _this.tags.length);
       _this.dataSource.data = _this.tags;
       _this.dataSource.paginator = _this.paginator;
       _this.dataSource.sort = _this.sort;
@@ -20206,21 +20211,44 @@ let ChartConfigComponent = class ChartConfigComponent {
           tagsId.push(result.variableId);
         }
         tagsId.forEach(id => {
-          let device = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getDeviceFromTagId(this.data.devices, id);
-          let tag = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getTagFromTagId([device], id);
-          if (tag) {
-            let exist = chart.lines.find(line => line.id === tag.id);
-            if (!exist) {
-              const myCopiedObject = {
-                id: tag.id,
-                name: this.getTagLabel(tag),
-                device: device.name,
-                color: this.getNextColor(),
-                label: this.getTagLabel(tag),
-                yaxis: 1,
-                spanGaps: true
-              };
-              chart.lines.push(myCopiedObject);
+          // Check if this is a ThingsBoard tag
+          if (id.startsWith('tb:')) {
+            const parts = id.split(':');
+            if (parts.length === 3) {
+              const deviceId = parts[1];
+              const key = parts[2];
+              let exist = chart.lines.find(line => line.id === id);
+              if (!exist) {
+                const myCopiedObject = {
+                  id: id,
+                  name: key,
+                  device: `TB:${deviceId}`,
+                  color: this.getNextColor(),
+                  label: key,
+                  yaxis: 1,
+                  spanGaps: true
+                };
+                chart.lines.push(myCopiedObject);
+              }
+            }
+          } else {
+            // Regular device tag
+            let device = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getDeviceFromTagId(this.data.devices, id);
+            let tag = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getTagFromTagId([device], id);
+            if (tag) {
+              let exist = chart.lines.find(line => line.id === tag.id);
+              if (!exist) {
+                const myCopiedObject = {
+                  id: tag.id,
+                  name: this.getTagLabel(tag),
+                  device: device.name,
+                  color: this.getNextColor(),
+                  label: this.getTagLabel(tag),
+                  yaxis: 1,
+                  spanGaps: true
+                };
+                chart.lines.push(myCopiedObject);
+              }
             }
           }
         });
@@ -20303,6 +20331,15 @@ let ChartConfigComponent = class ChartConfigComponent {
     if (line.device === '@') {
       return line.name;
     }
+    // Handle ThingsBoard tags (format: tb:deviceId:key)
+    if (line.id && line.id.startsWith('tb:')) {
+      const parts = line.id.split(':');
+      if (parts.length === 3) {
+        return parts[2]; // Return the key name
+      }
+
+      return line.name || line.label || '';
+    }
     let devices = this.data.devices.filter(x => x.name === line.device);
     if (devices && devices.length > 0) {
       let tags = Object.values(devices[0].tags);
@@ -20312,7 +20349,7 @@ let ChartConfigComponent = class ChartConfigComponent {
         }
       }
     }
-    return '';
+    return line.name || line.label || '';
   }
   getNextColor() {
     for (let x = 0; x < this.lineColor.length; x++) {
@@ -22677,21 +22714,44 @@ let GraphConfigComponent = class GraphConfigComponent {
           tagsId.push(result.variableId);
         }
         tagsId.forEach(id => {
-          let device = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getDeviceFromTagId(this.data.devices, id);
-          let tag = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getTagFromTagId([device], id);
-          if (tag) {
-            let exist = graph.sources.find(source => source.id === tag.id);
-            if (!exist) {
-              let color = this.getNextColor();
-              const myCopiedObject = {
-                id: tag.id,
-                name: this.getTagLabel(tag),
-                device: device.name,
-                label: this.getTagLabel(tag),
-                color: color,
-                fill: color
-              };
-              graph.sources.push(myCopiedObject);
+          // Check if this is a ThingsBoard tag
+          if (id.startsWith('tb:')) {
+            const parts = id.split(':');
+            if (parts.length === 3) {
+              const deviceId = parts[1];
+              const key = parts[2];
+              let exist = graph.sources.find(source => source.id === id);
+              if (!exist) {
+                let color = this.getNextColor();
+                const myCopiedObject = {
+                  id: id,
+                  name: key,
+                  device: `TB:${deviceId}`,
+                  label: key,
+                  color: color,
+                  fill: color
+                };
+                graph.sources.push(myCopiedObject);
+              }
+            }
+          } else {
+            // Regular device tag
+            let device = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getDeviceFromTagId(this.data.devices, id);
+            let tag = _models_device__WEBPACK_IMPORTED_MODULE_4__.DevicesUtils.getTagFromTagId([device], id);
+            if (tag) {
+              let exist = graph.sources.find(source => source.id === tag.id);
+              if (!exist) {
+                let color = this.getNextColor();
+                const myCopiedObject = {
+                  id: tag.id,
+                  name: this.getTagLabel(tag),
+                  device: device.name,
+                  label: this.getTagLabel(tag),
+                  color: color,
+                  fill: color
+                };
+                graph.sources.push(myCopiedObject);
+              }
             }
           }
         });
@@ -22819,6 +22879,15 @@ let GraphConfigComponent = class GraphConfigComponent {
     if (source.device === '@') {
       return source.name;
     }
+    // Handle ThingsBoard tags (format: tb:deviceId:key)
+    if (source.id && source.id.startsWith('tb:')) {
+      const parts = source.id.split(':');
+      if (parts.length === 3) {
+        return parts[2]; // Return the key name
+      }
+
+      return source.name || source.label || '';
+    }
     let devices = this.data.devices.filter(x => x.name === source.device);
     if (devices && devices.length > 0) {
       let tags = Object.values(devices[0].tags);
@@ -22828,7 +22897,7 @@ let GraphConfigComponent = class GraphConfigComponent {
         }
       }
     }
-    return '';
+    return source.name || source.label || '';
   }
   getNextColor() {
     for (let x = 0; x < this.lineColor.length; x++) {
@@ -29308,16 +29377,22 @@ let GraphBarComponent = GraphBarComponent_1 = class GraphBarComponent extends _g
     }
   }
   init(title, property, sources) {
+    console.log('init - sources:', sources);
     this.title = title;
     this.property = property;
     if (sources) {
+      console.log('init - sources no vacíos:', sources);
       this.setSources(sources);
+    } else {
+      console.log('init - sources vacíos');
     }
   }
   setSources(sources) {
+    console.log('setSources - sources:', sources);
     this.sourceMap = {};
     this.barChartData = [];
     for (let i = 0; i < sources.length; i++) {
+      console.log(`  Source ${i}: id=${sources[i].id}, label=${sources[i].label}, device=${sources[i].device}`);
       let dataset = {
         label: sources[i].label,
         data: [],
@@ -29330,6 +29405,7 @@ let GraphBarComponent = GraphBarComponent_1 = class GraphBarComponent extends _g
       this.barChartData.push(dataset);
     }
     this.sourceCount = sources.length;
+    console.log('setSources - sourceMap keys:', Object.keys(this.sourceMap));
   }
   setOptions(options) {
     if (options) {
@@ -29523,6 +29599,8 @@ let GraphBarComponent = GraphBarComponent_1 = class GraphBarComponent extends _g
       }
     }
     query.sids = Object.keys(this.sourceMap);
+    console.log('GraphBarComponent.getQuery - sourceMap keys:', Object.keys(this.sourceMap));
+    console.log('GraphBarComponent.getQuery - query.sids:', query.sids);
     return query;
   }
   static DefaultOptions() {
@@ -29774,6 +29852,7 @@ let GraphPieComponent = GraphPieComponent_1 = class GraphPieComponent extends _g
     }
   }
   init(title, property, sources) {
+    console.log('GraphPieComponent.init - sources:', sources);
     this.title = title;
     this.property = property;
     if (sources) {
@@ -29781,11 +29860,13 @@ let GraphPieComponent = GraphPieComponent_1 = class GraphPieComponent extends _g
     }
   }
   setSources(sources) {
+    console.log('GraphPieComponent.setSources - sources:', sources);
     this.sourceMap = {};
     let labels = [];
     this.pieData = [];
     let backgroundColor = [];
     for (let i = 0; i < sources.length; i++) {
+      console.log(`  Source ${i}: id=${sources[i].id}, label=${sources[i].label}, device=${sources[i].device}`);
       labels.push(sources[i].label || sources[i].name);
       this.pieData.push((i + 1) * 10);
       backgroundColor.push(sources[i].fill);
@@ -29796,6 +29877,7 @@ let GraphPieComponent = GraphPieComponent_1 = class GraphPieComponent extends _g
       data: this.pieData,
       backgroundColor: backgroundColor
     }];
+    console.log('GraphPieComponent.setSources - sourceMap keys:', Object.keys(this.sourceMap));
   }
   resize(height, width) {
     if (height && width) {
@@ -39104,10 +39186,13 @@ let GaugesManager = GaugesManager_1 = class GaugesManager {
     }
   }
   setGraphPropety(gauge, property, targetSignalsId) {
+    console.log('setGraphPropety - property:', property);
     if (property) {
       if (property.id) {
         let graph = this.hmiService.getGraph(property.id);
+        console.log('setGraphPropety - graph:', graph);
         if (graph) {
+          console.log('setGraphPropety - graph.sources:', graph.sources);
           gauge.init(graph.name, graph.property, graph.sources);
           // check for placeholder
           if ('sourceMap' in gauge && targetSignalsId) {
@@ -63258,7 +63343,7 @@ module.exports = "<div>\n    <h1 mat-dialog-title class=\"dialog-title\" mat-dia
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"dlg-container\">\n    <h1 mat-dialog-title style=\"display:inline-block;cursor:move;\" mat-dialog-draggable>{{'dlg.setup-title' | translate}}</h1>\n    <mat-icon (click)=\"onNoClick()\" class=\"dialog-close-btn\" >clear</mat-icon>\n    <div mat-dialog-content>\n        <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-gui' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/editor')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>view_module</mat-icon>\n                        <span>{{'dlg.setup-views' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onLayoutConfig()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>perm_data_setting</mat-icon>\n                        <span>{{'dlg.setup-layout' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onChartConfig()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>multiline_chart</mat-icon>\n                        <span>{{'dlg.setup-line-charts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onGraphConfig('bar')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>insert_chart_outlined</mat-icon>\n                        <span>{{'dlg.setup-bar-charts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/mapsLocations')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>location_on</mat-icon>\n                        <span>{{'dlg.setup-maps-locations' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div>\n        <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-diverse' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <!-- Botón de conexiones oculto por requerimiento -->\n            <!-- <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/device')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>lan</mat-icon>\n                        <span>{{'dlg.setup-connections' | translate}}</span>\n                    </div>\n                </button>\n            </div> -->\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/users')\" class=\"card-btn\" [disabled]=\"isToDisable('users')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>people</mat-icon>\n                        <span>{{'dlg.setup-users' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/userRoles')\" class=\"card-btn\" [disabled]=\"isToDisable('userRoles')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>groups</mat-icon>\n                        <span>{{'dlg.setup-user-roles' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onPlugins()\" class=\"card-btn\" [disabled]=\"isToDisable('plugins')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>extension</mat-icon>\n                        <span>{{'dlg.setup-plugins' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onWidgets()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>lock_open</mat-icon>\n                        <span>{{'dlg.setup-client-access' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onSettings()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>settings</mat-icon>\n                        <span>{{'dlg.setup-settings' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div>\n        <div class=\"btn-cards\">\n            <!-- <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/materials')\" class=\"card-btn\" [disabled]=\"isToDisable('resources')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>folder</mat-icon>\n                        <span>{{'dlg.setup-resources' | translate}}</span>\n                    </div>\n                </button>\n            </div> -->\n            <!-- <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/materials', 'fonts')\" class=\"card-btn\" [disabled]=\"isToDisable('fonts')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>font_download</mat-icon>\n                        <span>{{'dlg.setup-fonts' | translate}}</span>\n                    </div>\n                </button>\n            </div> -->\n        </div>\n        <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-logic' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/messages')\" class=\"card-btn\" [disabled]=\"isToDisable('messages')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>warning_amber</mat-icon>\n                        <span>{{'dlg.setup-alarms' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/notifications')\" class=\"card-btn\" [disabled]=\"isToDisable('notifications')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>notifications_none</mat-icon>\n                        <span>{{'dlg.setup-notifications' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/scripts')\" class=\"card-btn\" [disabled]=\"isToDisable('scripts')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>code</mat-icon>\n                        <span>{{'dlg.setup-scripts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/reports')\" class=\"card-btn\" [disabled]=\"isToDisable('reports')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>content_paste</mat-icon>\n                        <span>{{'dlg.setup-reports' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/language')\" class=\"card-btn\" [disabled]=\"isToDisable('language')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>language</mat-icon>\n                        <span>{{'dlg.setup-language' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div>\n        <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-system' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/logs')\" class=\"card-btn\" [disabled]=\"isToDisable('logs')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>assignment</mat-icon>\n                        <span>{{'dlg.setup-logs' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <!-- <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/events')\" class=\"card-btn\" [disabled]=\"isToDisable('events')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>report_gmailerrorred</mat-icon>\n                        <span>{{'dlg.setup-events' | translate}}</span>\n                    </div>\n                </button>\n            </div> -->\n        </div>\n    </div>\n</div>";
+module.exports = "<div class=\"dlg-container\">\n    <h1 mat-dialog-title style=\"display:inline-block;cursor:move;\" mat-dialog-draggable>{{'dlg.setup-title' | translate}}</h1>\n    <mat-icon (click)=\"onNoClick()\" class=\"dialog-close-btn\" >clear</mat-icon>\n    <div mat-dialog-content>\n        <!-- <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-gui' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div> -->\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/editor')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>view_module</mat-icon>\n                        <span>{{'dlg.setup-views' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onLayoutConfig()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>perm_data_setting</mat-icon>\n                        <span>{{'dlg.setup-layout' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <!-- Elementos ocultos por requerimiento del usuario -->\n            <!-- <div class=\"btn-card\">\n                <button mat-button (click)=\"onChartConfig()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>multiline_chart</mat-icon>\n                        <span>{{'dlg.setup-line-charts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onGraphConfig('bar')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>insert_chart_outlined</mat-icon>\n                        <span>{{'dlg.setup-bar-charts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/mapsLocations')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>location_on</mat-icon>\n                        <span>{{'dlg.setup-maps-locations' | translate}}</span>\n                    </div>\n                </button>\n            </div> -->\n        </div>\n        <!-- Secciones ocultas por requerimiento del usuario -->\n        <!-- <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-diverse' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/device')\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>lan</mat-icon>\n                        <span>{{'dlg.setup-connections' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/users')\" class=\"card-btn\" [disabled]=\"isToDisable('users')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>people</mat-icon>\n                        <span>{{'dlg.setup-users' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/userRoles')\" class=\"card-btn\" [disabled]=\"isToDisable('userRoles')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>groups</mat-icon>\n                        <span>{{'dlg.setup-user-roles' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onPlugins()\" class=\"card-btn\" [disabled]=\"isToDisable('plugins')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>extension</mat-icon>\n                        <span>{{'dlg.setup-plugins' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onWidgets()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>lock_open</mat-icon>\n                        <span>{{'dlg.setup-client-access' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"onSettings()\" class=\"card-btn\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>settings</mat-icon>\n                        <span>{{'dlg.setup-settings' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/materials')\" class=\"card-btn\" [disabled]=\"isToDisable('resources')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>folder</mat-icon>\n                        <span>{{'dlg.setup-resources' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/materials', 'fonts')\" class=\"card-btn\" [disabled]=\"isToDisable('fonts')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>font_download</mat-icon>\n                        <span>{{'dlg.setup-fonts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div>\n        <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-logic' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/messages')\" class=\"card-btn\" [disabled]=\"isToDisable('messages')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>warning_amber</mat-icon>\n                        <span>{{'dlg.setup-alarms' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/notifications')\" class=\"card-btn\" [disabled]=\"isToDisable('notifications')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>notifications_none</mat-icon>\n                        <span>{{'dlg.setup-notifications' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/scripts')\" class=\"card-btn\" [disabled]=\"isToDisable('scripts')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>code</mat-icon>\n                        <span>{{'dlg.setup-scripts' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/reports')\" class=\"card-btn\" [disabled]=\"isToDisable('reports')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>content_paste</mat-icon>\n                        <span>{{'dlg.setup-reports' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/language')\" class=\"card-btn\" [disabled]=\"isToDisable('language')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>language</mat-icon>\n                        <span>{{'dlg.setup-language' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div>\n        <div class=\"separator\">\n            <div class=\"separator-line\" style=\"position:absolute;left: 0px\"></div>\n            <div class=\"separator-text\">\n                {{'dlg.setup-system' | translate}}\n            </div>\n            <div class=\"separator-line\" style=\"position:absolute;right: 0px\"></div>\n        </div>\n        <div class=\"btn-cards\">\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/logs')\" class=\"card-btn\" [disabled]=\"isToDisable('logs')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>assignment</mat-icon>\n                        <span>{{'dlg.setup-logs' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n            <div class=\"btn-card\">\n                <button mat-button (click)=\"goTo('/events')\" class=\"card-btn\" [disabled]=\"isToDisable('events')\">\n                    <div class=\"card-btn-content\">\n                        <mat-icon>report_gmailerrorred</mat-icon>\n                        <span>{{'dlg.setup-events' | translate}}</span>\n                    </div>\n                </button>\n            </div>\n        </div> -->\n    </div>\n</div>";
 
 /***/ }),
 

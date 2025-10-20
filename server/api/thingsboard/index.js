@@ -228,6 +228,43 @@ function app() {
 
 
     /**
+     * GET Historical telemetry data for charts
+     */
+    tbApp.get('/api/thingsboard/device/:id/history', secureFnc, async function(req, res) {
+        const permission = checkGroupsFnc(req);
+        if (res.statusCode === 403) {
+            runtime.logger.error('api get thingsboard history: Token Expired');
+        } else if (!permission || permission.groups < 0) {
+            res.status(401).json({error: 'unauthorized_error', message: 'Unauthorized!'});
+            runtime.logger.error('api get thingsboard history: Unauthorized');
+        } else {
+            try {
+                if (!runtime.thingsboard || !runtime.thingsboard.isEnabled()) {
+                    res.json([]);
+                    return;
+                }
+
+                const deviceId = req.params.id;
+                const keys = req.query.keys ? req.query.keys.split(',') : [];
+                const startTs = parseInt(req.query.startTs);
+                const endTs = parseInt(req.query.endTs);
+                const limit = parseInt(req.query.limit) || 1000;
+
+                if (!keys.length || !startTs || !endTs) {
+                    res.status(400).json({error: 'bad_request', message: 'Missing required parameters: keys, startTs, endTs'});
+                    return;
+                }
+
+                const history = await runtime.thingsboard.getTelemetryHistory(deviceId, keys, startTs, endTs, limit);
+                res.json(history);
+            } catch (err) {
+                res.status(500).json({error: 'server_error', message: err.message});
+                runtime.logger.error(`api get thingsboard history: ${err.message}`);
+            }
+        }
+    });
+
+    /**
      * POST Test ThingsBoard connection
      */
     tbApp.post('/api/thingsboard/test', secureFnc, function(req, res) {
