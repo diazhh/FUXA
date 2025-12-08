@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "host": "localhost",
+  "port": 8080,
+  "protocol": "http",
+  "username": "master@gdt.com",
+  "password": "10203040",
+  "syncInterval": 30000,
+  "useWebSocket": true,
+  "reconnectInterval": 5000,
+  "maxReconnectAttempts": 10,
+  "requestTimeout": 10000,
+  "deviceFilter": {
+    "type": null,
+    "label": null
+  },
+  "telemetryKeys": {
+    "includeAll": true,
+    "whitelist": [],
+    "blacklist": []
+  }
+}

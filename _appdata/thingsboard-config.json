@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "host": "192.168.31.113",
+  "port": 8081,
+  "protocol": "http",
+  "username": "tenant@thingsboard.org",
+  "password": "1ba73de1e7f27d2a6c4f9bc7553fd096:c38e5d84f5c055880da2a47d28c27fc3",
+  "syncInterval": 30000,
+  "useWebSocket": true,
+  "reconnectInterval": 5000,
+  "maxReconnectAttempts": 10,
+  "requestTimeout": 10000,
+  "deviceFilter": {
+    "type": null,
+    "label": null
+  },
+  "telemetryKeys": {
+    "includeAll": true,
+    "whitelist": [],
+    "blacklist": []
+  }
+}
