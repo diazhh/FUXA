@@ -65,27 +65,31 @@ typings/
 # workspace
 *.code-workspace
 
-#appdata
-_appdata/
+# appdata - HABILITADO para migración
+# _appdata/
 
-# logs
-_logs/
+# logs - HABILITADO para migración
+# _logs/
 
-# database
-_db/
+# database - HABILITADO para migración
+# _db/
 
 # ex.packages
-_pkg/
-#resources images
-_images/
+# _pkg/
 
-_reports/
+# resources images - HABILITADO para migración
+# _images/
 
-_certificates/
+# reports - HABILITADO para migración
+# _reports/
 
-# appdata
-server/_appdata
+# certificates
+# _certificates/
+
+# appdata - HABILITADO para migración
+# server/_appdata
 #server/package-lock.json
 #client/package-lock.json
 
-server/_widgets
+# widgets - HABILITADO para migración
+# server/_widgets
