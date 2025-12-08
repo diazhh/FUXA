@@ -100,9 +100,9 @@ class ThingsBoardClient extends EventEmitter {
     }
 
     /**
-     * Get all devices from ThingsBoard
+     * Get all devices from ThingsBoard with pagination and search
      */
-    async getDevices(pageSize = 1000, page = 0) {
+    async getDevices(pageSize = 50, page = 0, searchText = '') {
         try {
             if (!this.token) {
                 this.logger.info('thingsboard-client: no token, authenticating...');
@@ -112,29 +112,50 @@ class ThingsBoardClient extends EventEmitter {
             const baseUrl = `${this.config.protocol}://${this.config.host}:${this.config.port}`;
             const url = `${baseUrl}/api/tenant/devices`;
             
-            this.logger.info(`thingsboard-client: fetching devices from ${url}`);
+            const params = {
+                pageSize,
+                page
+            };
             
-            const response = await this.axiosInstance.get(url, {
-                params: {
-                    pageSize,
-                    page
-                }
-            });
+            // Add search text if provided
+            if (searchText && searchText.trim() !== '') {
+                params.textSearch = searchText.trim();
+            }
+            
+            this.logger.info(`thingsboard-client: fetching devices from ${url} (page: ${page}, pageSize: ${pageSize}, search: "${searchText}")`);
+            
+            const response = await this.axiosInstance.get(url, { params });
 
             this.logger.info(`thingsboard-client: response status ${response.status}`);
 
-            if (response.data && response.data.data) {
-                this.logger.info(`thingsboard-client: retrieved ${response.data.data.length} devices`, true);
-                return response.data.data;
+            if (response.data) {
+                const devices = response.data.data || [];
+                const totalPages = response.data.totalPages || 0;
+                const totalElements = response.data.totalElements || 0;
+                const hasNext = response.data.hasNext || false;
+                
+                this.logger.info(`thingsboard-client: retrieved ${devices.length} devices (total: ${totalElements}, page ${page}/${totalPages})`, true);
+                
+                return {
+                    data: devices,
+                    totalPages,
+                    totalElements,
+                    hasNext
+                };
             }
 
-            this.logger.warn('thingsboard-client: response has no data.data field');
-            return [];
+            this.logger.warn('thingsboard-client: response has no data field');
+            return {
+                data: [],
+                totalPages: 0,
+                totalElements: 0,
+                hasNext: false
+            };
         } catch (err) {
             if (err.response?.status === 401) {
                 this.logger.warn('thingsboard-client: 401 unauthorized, refreshing token...');
                 await this.refreshAuthToken();
-                return await this.getDevices(pageSize, page);
+                return await this.getDevices(pageSize, page, searchText);
             }
             
             this.logger.error(`thingsboard-client: failed to get devices! ${err.message}`);

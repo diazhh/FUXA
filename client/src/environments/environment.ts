@@ -3,7 +3,7 @@ export const environment = {
   version: require('../../package.json').version,
   production: false,
   apiEndpoint: null,
-  apiPort: 1881,
+  apiPort: 1887,
   serverEnabled: true,
   type: null
 };
