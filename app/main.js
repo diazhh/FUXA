@@ -400,7 +400,7 @@ async function restartApp(dataDir, win) {
             throw new Error(`Server file not found: ${serverEntry}`);
         }
         serverProcess = fork(serverEntry, [], {
-            env: { ...process.env, userDir: dataDir, PORT: 1881 },
+            env: { ...process.env, userDir: dataDir, PORT: 1887 },
             silent: false
         });
         serverProcess.on('error', (error) => {
@@ -416,8 +416,8 @@ async function restartApp(dataDir, win) {
     // Reload UI
     try {
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds for server
-        await win.loadURL('http://localhost:1881');
-        console.log('UI loaded: http://localhost:1881');
+        await win.loadURL('http://localhost:1887');
+        console.log('UI loaded: http://localhost:1887');
     } catch (error) {
         console.error('Failed to load UI:', error.message);
         await dialog.showErrorBox('FUXA Error', `Failed to load UI: ${error.message}`);

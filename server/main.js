@@ -244,7 +244,7 @@ if (parsedArgs.port !== undefined) {
     settings.uiPort = parsedArgs.port;
 } else {
     if (settings.uiPort === undefined) {
-        settings.uiPort = 1881;
+        settings.uiPort = 1887;
     }
 }
 settings.uiHost = settings.uiHost || "0.0.0.0";
