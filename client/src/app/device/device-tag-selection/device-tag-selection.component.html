@@ -1,6 +1,28 @@
 <div class="container">
     <h1 mat-dialog-title class="dialog-title" mat-dialog-draggable>{{'device-tag-dialog-title' | translate}}</h1>
     <mat-icon (click)="onNoClick()" class="dialog-close-btn">clear</mat-icon>
+    
+    <!-- GDT Tags Search -->
+    <div style="padding: 10px 0; display: flex; align-items: center; gap: 10px;">
+        <mat-form-field style="flex: 1; max-width: 400px;">
+            <mat-label>Buscar tags de GDT</mat-label>
+            <input matInput [formControl]="tbDeviceSearchFilter" placeholder="Nombre del tag...">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button 
+                color="accent" 
+                (click)="loadMoreThingsBoardDevices()" 
+                [disabled]="!tbHasNext || isLoadingTbDevices"
+                style="height: 40px;">
+            <mat-icon *ngIf="!isLoadingTbDevices">expand_more</mat-icon>
+            <mat-spinner *ngIf="isLoadingTbDevices" diameter="20" style="display: inline-block;"></mat-spinner>
+            {{ isLoadingTbDevices ? 'Cargando...' : 'Cargar más tags GDT' }}
+        </button>
+        <span *ngIf="tbTotalPages > 0" style="color: #666; font-size: 12px;">
+            Página {{tbCurrentPage + 1}} de {{tbTotalPages}}
+        </span>
+    </div>
+    
     <mat-table #table [dataSource]="dataSource" matSort style="height:620px" class="dialog-mdsd-table">
         <!-- Checkbox Column -->
         <ng-container matColumnDef="toogle">

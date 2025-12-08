@@ -6787,7 +6787,7 @@ class AppSettings {
   /** Editor language */
   language = 'en';
   /** Web server port */
-  uiPort = 1881;
+  uiPort = 1887;
   /** Security access to enable user and authentication */
   secureEnabled = false;
   /** Expiration of authanticated token (15m)*/
@@ -8728,7 +8728,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SaveMode: () => (/* binding */ SaveMode),
 /* harmony export */   ServerSettings: () => (/* binding */ ServerSettings)
 /* harmony export */ });
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 61699);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs */ 72513);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs */ 60331);
@@ -9053,7 +9053,7 @@ let ProjectService = ProjectService_1 = class ProjectService {
   }
   setViewAsync(_x) {
     var _this = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (view, notify = false) {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* (view, notify = false) {
       const existingView = _this.projectData.hmi.views.find(v => v.id === view.id);
       if (existingView) {
         Object.assign(existingView, view);
@@ -9668,14 +9668,14 @@ let ProjectService = ProjectService_1 = class ProjectService {
   //#endregion
   getTagsValues(tagsIds, sourceScriptName) {
     var _this2 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let values = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_16__.firstValueFrom)(_this2.storage.getTagsValues(tagsIds, sourceScriptName));
       return values;
     })();
   }
   runSysFunctionSync(functionName, params) {
     var _this3 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let values = yield (0,rxjs__WEBPACK_IMPORTED_MODULE_16__.firstValueFrom)(_this3.storage.runSysFunction(functionName, params));
       return values;
     })();
@@ -11070,7 +11070,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ScriptService: () => (/* binding */ ScriptService)
 /* harmony export */ });
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 61699);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common/http */ 54860);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs */ 12235);
@@ -11242,7 +11242,7 @@ let ScriptService = class ScriptService {
   /* get Tag value from server, check authorization of source script */
   $getTag(id) {
     var _this = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let tag = _this.projectService.getTagFromId(id, true);
       if (tag?.deviceType === _models_device__WEBPACK_IMPORTED_MODULE_7__.DeviceType.internal) {
         return tag.value;
@@ -11261,14 +11261,14 @@ let ScriptService = class ScriptService {
   }
   $getTagDaqSettings(id) {
     var _this2 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let daqSettings = yield _this2.projectService.runSysFunctionSync('$getTagDaqSettings', [id]);
       return daqSettings;
     })();
   }
   $setTagDaqSettings(id, daq) {
     var _this3 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this3.projectService.runSysFunctionSync('$setTagDaqSettings', [id, daq]);
     })();
   }
@@ -11289,20 +11289,20 @@ let ScriptService = class ScriptService {
   }
   $getDeviceProperty(deviceName) {
     var _this4 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let daqSettings = yield _this4.projectService.runSysFunctionSync('$getDeviceProperty', [deviceName]);
       return daqSettings;
     })();
   }
   $setDeviceProperty(deviceName, property) {
     var _this5 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this5.projectService.runSysFunctionSync('$setDeviceProperty', [deviceName, property]);
     })();
   }
   $setAdapterToDevice(adapterName, deviceName) {
     var _this6 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this6.deviceAdapaterService.setTargetDevice(adapterName, deviceName, _this6.hmiService.initSignalValues.bind(_this6.hmiService));
     })();
   }
@@ -11322,7 +11322,7 @@ let ScriptService = class ScriptService {
   }
   $runServerScript(scriptName, ...params) {
     var _this7 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       let scriptToRun = _helpers_utils__WEBPACK_IMPORTED_MODULE_6__.Utils.clone(_this7.projectService.getScripts().find(dataScript => dataScript.name == scriptName));
       scriptToRun.parameters = params;
       return yield (0,rxjs__WEBPACK_IMPORTED_MODULE_13__.lastValueFrom)(_this7.runScript(scriptToRun, false));
@@ -11330,7 +11330,7 @@ let ScriptService = class ScriptService {
   }
   $getHistoricalTags(tagIds, fromDate, toDate) {
     var _this8 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       const query = {
         sids: tagIds,
         from: fromDate,
@@ -11341,25 +11341,25 @@ let ScriptService = class ScriptService {
   }
   $sendMessage(to, subject, message) {
     var _this9 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this9.projectService.runSysFunctionSync('$sendMessage', [to, subject, message]);
     })();
   }
   $getAlarms() {
     var _this0 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this0.projectService.runSysFunctionSync('$getAlarms', null);
     })();
   }
   $getAlarmsHistory(from, to) {
     var _this1 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this1.projectService.runSysFunctionSync('$getAlarmsHistory', [from, to]);
     })();
   }
   $ackAlarm(alarmName, types) {
     var _this10 = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       return yield _this10.projectService.runSysFunctionSync('$ackAlarm', [alarmName, types]);
     })();
   }
@@ -15719,23 +15719,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   DeviceTagSelectionComponent: () => (/* binding */ DeviceTagSelectionComponent)
 /* harmony export */ });
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _device_tag_selection_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./device-tag-selection.component.html?ngResource */ 75698);
 /* harmony import */ var _device_tag_selection_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./device-tag-selection.component.scss?ngResource */ 31683);
 /* harmony import */ var _device_tag_selection_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_device_tag_selection_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 61699);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 61699);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ 28849);
-/* harmony import */ var _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/legacy-dialog */ 51035);
-/* harmony import */ var _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/legacy-paginator */ 57796);
-/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/sort */ 87963);
+/* harmony import */ var _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/legacy-dialog */ 51035);
+/* harmony import */ var _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/legacy-paginator */ 57796);
+/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/sort */ 87963);
 /* harmony import */ var _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material/legacy-table */ 49000);
 /* harmony import */ var _models_device__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../_models/device */ 15625);
 /* harmony import */ var _services_project_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../_services/project.service */ 57610);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ 72513);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs */ 20274);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs */ 50655);
 /* harmony import */ var _helpers_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../_helpers/utils */ 91019);
 /* harmony import */ var _tag_property_tag_property_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../tag-property/tag-property.service */ 68750);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common/http */ 54860);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/common/http */ 54860);
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
@@ -15775,6 +15776,7 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
   nameFilter = new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.UntypedFormControl();
   addressFilter = new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.UntypedFormControl();
   deviceFilter = new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.UntypedFormControl();
+  tbDeviceSearchFilter = new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.UntypedFormControl();
   tags = [];
   devices = [];
   filteredValues = {
@@ -15782,6 +15784,14 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
     address: '',
     device: ''
   };
+  // ThingsBoard pagination state
+  tbCurrentPage = 0;
+  tbPageSize = 50;
+  tbTotalPages = 0;
+  tbHasNext = false;
+  tbSearchText = '';
+  tbLoadedDevices = new Map();
+  isLoadingTbDevices = false;
   defColumns = ['toogle', 'name', 'address', 'device', 'select'];
   deviceTagNotEditable = [_models_device__WEBPACK_IMPORTED_MODULE_3__.DeviceType.MQTTclient, _models_device__WEBPACK_IMPORTED_MODULE_3__.DeviceType.ODBC];
   constructor(dialogRef, projectService, tagPropertyService, http, data) {
@@ -15804,6 +15814,16 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
     this.deviceFilter.valueChanges.pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_10__.takeUntil)(this.destroy$)).subscribe(deviceFilterValue => {
       this.filteredValues['device'] = deviceFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
+    // ThingsBoard device search with debounce
+    this.tbDeviceSearchFilter.valueChanges.pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_10__.takeUntil)(this.destroy$), (0,rxjs__WEBPACK_IMPORTED_MODULE_11__.debounceTime)(500)).subscribe(searchValue => {
+      this.tbSearchText = searchValue || '';
+      this.tbCurrentPage = 0;
+      this.tbLoadedDevices.clear();
+      // Remove existing GDT tags before searching
+      this.tags = this.tags.filter(tag => !tag.device.startsWith('GDT:'));
+      this.dataSource.data = this.tags;
+      this.loadThingsBoardDevices();
     });
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
@@ -15912,7 +15932,7 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
   }
   loadDevicesTags(newTag, deviceName) {
     var _this = this;
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       _this.tags = [];
       _this.devices = Object.values(_this.projectService.getDevices());
       // Load tags from project devices (Modbus, OPC UA, etc.)
@@ -15947,41 +15967,8 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
           }
         });
       }
-      // Load tags from ThingsBoard devices (on-demand query)
-      try {
-        const tbDevices = yield _this.http.get('/api/thingsboard/devices').toPromise();
-        console.log('ThingsBoard devices loaded:', tbDevices);
-        if (tbDevices && tbDevices.length > 0) {
-          // For each ThingsBoard device, fetch its telemetry keys
-          for (const tbDevice of tbDevices) {
-            const deviceId = tbDevice.id?.id || tbDevice.id;
-            const deviceName = tbDevice.name;
-            console.log(`Loading telemetry keys for device: ${deviceName} (${deviceId})`);
-            try {
-              const keys = yield _this.http.get(`/api/thingsboard/device/${deviceId}/keys`).toPromise();
-              console.log(`Telemetry keys for ${deviceName}:`, keys);
-              if (keys && keys.length > 0) {
-                // Create a tag for each telemetry key
-                keys.forEach(key => {
-                  const tagId = `tb:${deviceId}:${key}`;
-                  _this.tags.push({
-                    id: tagId,
-                    name: key,
-                    address: deviceId,
-                    device: `TB:${deviceName}`,
-                    checked: tagId === _this.data.variableId,
-                    error: null
-                  });
-                });
-              }
-            } catch (err) {
-              console.error(`Failed to load telemetry keys for device ${deviceName}:`, err);
-            }
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load ThingsBoard devices:', err);
-      }
+      // Load first page of ThingsBoard devices with pagination
+      yield _this.loadThingsBoardDevices();
       console.log('Total tags loaded:', _this.tags.length);
       _this.dataSource.data = _this.tags;
       _this.dataSource.paginator = _this.paginator;
@@ -15993,47 +15980,140 @@ let DeviceTagSelectionComponent = class DeviceTagSelectionComponent {
       }
     })();
   }
+  /**
+   * Load ThingsBoard devices with pagination and search
+   */
+  loadThingsBoardDevices() {
+    var _this2 = this;
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (_this2.isLoadingTbDevices) {
+        return;
+      }
+      try {
+        _this2.isLoadingTbDevices = true;
+        const response = yield _this2.http.get('/api/thingsboard/devices', {
+          params: {
+            pageSize: _this2.tbPageSize.toString(),
+            page: _this2.tbCurrentPage.toString(),
+            searchText: _this2.tbSearchText
+          }
+        }).toPromise();
+        console.log('ThingsBoard devices page loaded:', response);
+        console.log('Response data:', response?.data);
+        console.log('Response data length:', response?.data?.length);
+        // Update pagination info even if no data
+        _this2.tbTotalPages = response?.totalPages || 0;
+        _this2.tbHasNext = response?.hasNext || false;
+        if (response && response.data && response.data.length > 0) {
+          console.log(`TB Pagination: page ${_this2.tbCurrentPage + 1}/${_this2.tbTotalPages}, hasNext: ${_this2.tbHasNext}`);
+          // Filter only new devices
+          const newDevices = response.data.filter(tbDevice => {
+            const deviceId = tbDevice.id?.id || tbDevice.id;
+            return !_this2.tbLoadedDevices.has(deviceId);
+          });
+          console.log(`Loading telemetry keys for ${newDevices.length} new devices in parallel...`);
+          // Load telemetry keys for all new devices in parallel
+          const devicePromises = newDevices.map(tbDevice => {
+            const deviceId = tbDevice.id?.id || tbDevice.id;
+            const deviceName = tbDevice.name;
+            _this2.tbLoadedDevices.set(deviceId, tbDevice);
+            return _this2.http.get(`/api/thingsboard/device/${deviceId}/keys`).toPromise().then(keys => {
+              if (keys && keys.length > 0) {
+                // Filter keys by search text if provided
+                let filteredKeys = keys;
+                if (_this2.tbSearchText && _this2.tbSearchText.trim() !== '') {
+                  const searchLower = _this2.tbSearchText.toLowerCase();
+                  filteredKeys = keys.filter(key => key.toLowerCase().includes(searchLower) || deviceName.toLowerCase().includes(searchLower));
+                }
+                // Create tags for filtered keys
+                return filteredKeys.map(key => ({
+                  id: `tb:${deviceId}:${key}`,
+                  name: key,
+                  address: deviceId,
+                  device: `GDT:${deviceName}`,
+                  checked: `tb:${deviceId}:${key}` === _this2.data.variableId,
+                  error: null
+                }));
+              }
+              return [];
+            }).catch(err => {
+              console.error(`Failed to load telemetry keys for device ${deviceName}:`, err);
+              return [];
+            });
+          });
+          // Wait for all devices to load in parallel
+          const deviceTagsArrays = yield Promise.all(devicePromises);
+          // Flatten and add all tags
+          const newTags = [].concat(...deviceTagsArrays);
+          _this2.tags.push(...newTags);
+          console.log(`Loaded ${newTags.length} new tags from ${newDevices.length} devices`);
+          console.log(`Total tags: ${_this2.tags.length}`);
+          // Update table data
+          _this2.dataSource.data = _this2.tags;
+        } else {
+          console.log('No ThingsBoard devices found in response');
+        }
+      } catch (err) {
+        console.error('Failed to load ThingsBoard devices:', err);
+      } finally {
+        _this2.isLoadingTbDevices = false;
+      }
+    })();
+  }
+  /**
+   * Load next page of ThingsBoard devices
+   */
+  loadMoreThingsBoardDevices() {
+    var _this3 = this;
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+      if (!_this3.tbHasNext || _this3.isLoadingTbDevices) {
+        return;
+      }
+      _this3.tbCurrentPage++;
+      yield _this3.loadThingsBoardDevices();
+    })();
+  }
   static ctorParameters = () => [{
-    type: _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_11__.MatLegacyDialogRef
+    type: _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MatLegacyDialogRef
   }, {
     type: _services_project_service__WEBPACK_IMPORTED_MODULE_4__.ProjectService
   }, {
     type: _tag_property_tag_property_service__WEBPACK_IMPORTED_MODULE_6__.TagPropertyService
   }, {
-    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_12__.HttpClient
+    type: _angular_common_http__WEBPACK_IMPORTED_MODULE_13__.HttpClient
   }, {
     type: undefined,
     decorators: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_13__.Inject,
-      args: [_angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_11__.MAT_LEGACY_DIALOG_DATA]
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_14__.Inject,
+      args: [_angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MAT_LEGACY_DIALOG_DATA]
     }]
   }];
   static propDecorators = {
     table: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_13__.ViewChild,
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_14__.ViewChild,
       args: [_angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_8__.MatLegacyTable, {
         static: false
       }]
     }],
     sort: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_13__.ViewChild,
-      args: [_angular_material_sort__WEBPACK_IMPORTED_MODULE_14__.MatSort, {
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_14__.ViewChild,
+      args: [_angular_material_sort__WEBPACK_IMPORTED_MODULE_15__.MatSort, {
         static: false
       }]
     }],
     paginator: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_13__.ViewChild,
-      args: [_angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_15__.MatLegacyPaginator, {
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_14__.ViewChild,
+      args: [_angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_16__.MatLegacyPaginator, {
         static: false
       }]
     }]
   };
 };
-DeviceTagSelectionComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.Component)({
+DeviceTagSelectionComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_14__.Component)({
   selector: 'app-device-tag-selection',
   template: _device_tag_selection_component_html_ngResource__WEBPACK_IMPORTED_MODULE_1__,
   styles: [(_device_tag_selection_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_2___default())]
-}), __metadata("design:paramtypes", [_angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_11__.MatLegacyDialogRef, _services_project_service__WEBPACK_IMPORTED_MODULE_4__.ProjectService, _tag_property_tag_property_service__WEBPACK_IMPORTED_MODULE_6__.TagPropertyService, _angular_common_http__WEBPACK_IMPORTED_MODULE_12__.HttpClient, Object])], DeviceTagSelectionComponent);
+}), __metadata("design:paramtypes", [_angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MatLegacyDialogRef, _services_project_service__WEBPACK_IMPORTED_MODULE_4__.ProjectService, _tag_property_tag_property_service__WEBPACK_IMPORTED_MODULE_6__.TagPropertyService, _angular_common_http__WEBPACK_IMPORTED_MODULE_13__.HttpClient, Object])], DeviceTagSelectionComponent);
 
 
 /***/ }),
@@ -34691,7 +34771,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   PipeComponent: () => (/* binding */ PipeComponent),
 /* harmony export */   PipeOptions: () => (/* binding */ PipeOptions)
 /* harmony export */ });
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
+/* harmony import */ var _var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js */ 71670);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 61699);
 /* harmony import */ var _models_hmi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../_models/hmi */ 84126);
 /* harmony import */ var _gauge_base_gauge_base_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../gauge-base/gauge-base.component */ 57989);
@@ -34850,7 +34930,7 @@ let PipeComponent = PipeComponent_1 = class PipeComponent {
     }
   }
   static runImageAction(gaugeSettings, action, svgElement, gaugeStatus) {
-    return (0,_home_jsalazar_fcore_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
+    return (0,_var_proyectos_FUXA_client_node_modules_babel_runtime_helpers_esm_asyncToGenerator_js__WEBPACK_IMPORTED_MODULE_0__["default"])(function* () {
       if (!gaugeStatus.actionRef?.animr) {
         gaugeStatus.actionRef ??= new _models_hmi__WEBPACK_IMPORTED_MODULE_1__.GaugeActionStatus(action.type);
         PipeComponent_1.removeImageChildren(svgElement);
@@ -42087,8 +42167,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NgxFabButtonComponent: () => (/* binding */ NgxFabButtonComponent)
 /* harmony export */ });
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/app/gui-helpers/fab-button/ngx-fab-button.component.ts.css?ngResource!=!./node_modules/@ngtools/webpack/src/loaders/inline-resource.js?data=CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg!./src/app/gui-helpers/fab-button/ngx-fab-button.component.ts */ 84524);
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/app/gui-helpers/fab-button/ngx-fab-button.component.ts.css?ngResource!=!./node_modules/@ngtools/webpack/src/loaders/inline-resource.js?data=CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg!./src/app/gui-helpers/fab-button/ngx-fab-button.component.ts */ 84524);
+/* harmony import */ var _var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 72513);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 58071);
 /* harmony import */ var _ngx_fab_item_button_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ngx-fab-item-button.component */ 77202);
@@ -42305,7 +42385,7 @@ NgxFabButtonComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4_
         <ng-content></ng-content>
     </div>
   `,
-  styles: [(_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default())]
+  styles: [(_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgOmhvc3QgewogICAgcG9zaXRpb246IGFic29sdXRlOwogIH0KICAuZmFiLW1lbnUgewogICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94OwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHdpZHRoOjQwcHg7CiAgICAgIGhlaWdodDogNDBweDsKICAgICAgdGV4dC1hbGlnbjogbGVmdDsKICAgICAgZGlzcGxheTogZmxleDsKICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgICAgIGN1cnNvcjogcG9pbnRlcjsKICAgICAgei1pbmRleDogOTsKICB9CiAgLmZhYi10b2dnbGUgewogICAgYm9yZGVyLXJhZGl1czogMTAwJTsKICAgIHdpZHRoOiAzNnB4OwogICAgaGVpZ2h0OiAzNnB4OwogICAgY29sb3I6IHdoaXRlOwogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgbGluZS1oZWlnaHQ6IDUwcHg7CiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogYWxsIGVhc2Utb3V0IDIwMG1zOwogICAgei1pbmRleDogMjsKICAgIHRyYW5zaXRpb24tdGltaW5nLWZ1bmN0aW9uOiBjdWJpYy1iZXppZXIoMC4xNzUsIDAuODg1LCAwLjMyLCAxLjI3NSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA0MDBtczsKICAgIHRyYW5zZm9ybTogc2NhbGUoMSwgMSkgdHJhbnNsYXRlM2QoMCwgMCwgMCk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBib3gtc2hhZG93OiAwIDJweCA1cHggMCByZ2JhKDAsMCwwLC4yNik7CiAgfQogIC5mYWItbWVudSAuZmFiLXRvZ2dsZTpob3ZlciB7CiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuMiwgMS4yKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAgLmZhYi1tZW51IDo6bmctZGVlcCAuaXRlbSB7CiAgICAgb3BhY2l0eTogMDsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLml0ZW0gewogICAgIG9wYWNpdHk6IDE7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgOjpuZy1kZWVwIC5jb250ZW50LXdyYXBwZXIgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICB9CiAgLmZhYi1tZW51LmFjdGl2ZSA6Om5nLWRlZXAgLmNvbnRlbnQgewogICAgZGlzcGxheTogYmxvY2s7CiAgfQogIC5mYWItbWVudS5hY3RpdmUgLmZhYi10b2dnbGUgewogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGxpbmVhcjsKICAgIHRyYW5zaXRpb24tZHVyYXRpb246IDIwMG1zOwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLCAxKSB0cmFuc2xhdGUzZCgwLCAwLCAwKTsKICB9CiAg_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default())]
 }), __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_4__.ElementRef, _angular_core__WEBPACK_IMPORTED_MODULE_4__.ChangeDetectorRef])], NgxFabButtonComponent);
 
 
@@ -42322,8 +42402,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   NgxFabItemButtonComponent: () => (/* binding */ NgxFabItemButtonComponent)
 /* harmony export */ });
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/app/gui-helpers/fab-button/ngx-fab-item-button.component.ts.css?ngResource!=!./node_modules/@ngtools/webpack/src/loaders/inline-resource.js?data=CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA%3D%3D!./src/app/gui-helpers/fab-button/ngx-fab-item-button.component.ts */ 45710);
-/* harmony import */ var _home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/app/gui-helpers/fab-button/ngx-fab-item-button.component.ts.css?ngResource!=!./node_modules/@ngtools/webpack/src/loaders/inline-resource.js?data=CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA%3D%3D!./src/app/gui-helpers/fab-button/ngx-fab-item-button.component.ts */ 45710);
+/* harmony import */ var _var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 61699);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
@@ -42422,7 +42502,7 @@ NgxFabItemButtonComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODUL
     </div>
   `,
   changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_1__.ChangeDetectionStrategy.OnPush,
-  styles: [(_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_home_jsalazar_fcore_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_home_jsalazar_fcore_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default())]
+  styles: [(_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts_css_ngResource_var_proyectos_FUXA_client_node_modules_ngtools_webpack_src_loaders_inline_resource_js_data_CiAgLml0ZW0gewogICAgLyogd2lkdGg6NDBweDsgKi8KICAgIGhlaWdodDogMzZweDsKICAgIGxlZnQ6IDNweDsKICAgIC8qIGxlZnQ6IC0zcHg7ICovCiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZTNkKDAsIDAsIDApOwogICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtLCBvcGFjaXR5IGVhc2Utb3V0IDIwMG1zOwogICAgdHJhbnNpdGlvbi10aW1pbmctZnVuY3Rpb246IGN1YmljLWJlemllcigwLjE2NSwgMC44NCwgMC40NCwgMSk7CiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAxODBtczsKICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHRvcDo1cHg7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICB6LWluZGV4OiA5OTk5OwogIH0KICAuaXRlbS5kaXNhYmxlZCB7CiAgICBwb2ludGVyLWV2ZW50czogbm9uZTsKICB9CiAgLml0ZW0uZGlzYWJsZWQgLmZhYi1pdGVtIHsKICAgIGJhY2tncm91bmQtY29sb3I6IGxpZ2h0Z3JheTsKICB9CiAgLmNvbnRlbnQgewogICAgei1pbmRleDogOTk5OTsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgbGluZS1oZWlnaHQ6IDI1cHg7CiAgICBjb2xvcjogd2hpdGU7CiAgICAvKiB0ZXh0LXRyYW5zZm9ybTogbG93ZXJjYXNlOyAqLwogICAgcGFkZGluZzogNXB4IDIwcHggM3B4IDIwcHg7CiAgICBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMThweDsKICAgIGJvcmRlci1ib3R0b20tcmlnaHQtcmFkaXVzOiAxOHB4OwogICAgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMThweDsKICAgIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDE4cHg7CiAgICBkaXNwbGF5OiBub25lOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgaGVpZ2h0OiAyOHB4OwogICAgLyogbWFyZ2luLXRvcDogNHB4OyAqLwogICAgYm94LXNoYWRvdzogMCAycHggNXB4IDAgcmdiYSgwLDAsMCwuMjYpOwogICAgd2hpdGUtc3BhY2U6bm93cmFwOwogIH0KICAuZmFiLWl0ZW0gewogICAgbGVmdDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNTBweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtLWV4IHsKICAgIHRvcDogMDsKICAgIGJhY2tncm91bmQ6IHJnYmEoNjgsMTM4LDI1NSwgMSk7CiAgICBib3JkZXItcmFkaXVzOiAxMDAlOwogICAgd2lkdGg6IDM2cHg7CiAgICBoZWlnaHQ6IDM2cHg7CiAgICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgICBjb2xvcjogd2hpdGU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICBsaW5lLWhlaWdodDogNDVweDsKICAgIC8qIGJveC1zaGFkb3c6IDAgMnB4IDVweCAwIHJnYmEoMCwwLDAsLjI2KTsgKi8KICB9CiAgLmZhYi1pdGVtIGltZyB7CiAgICBwYWRkaW5nLWJvdHRvbTogMnB4OwogICAgcGFkZGluZy1sZWZ0OiA1cHg7CiAgfQogIA_3D_3D_var_proyectos_FUXA_client_src_app_gui_helpers_fab_button_ngx_fab_item_button_component_ts__WEBPACK_IMPORTED_MODULE_0___default())]
 })], NgxFabItemButtonComponent);
 
 
@@ -47649,28 +47729,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/datepicker */ 82226);
 /* harmony import */ var _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/legacy-dialog */ 51035);
 /* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/expansion */ 88060);
-/* harmony import */ var _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/grid-list */ 647);
-/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/icon */ 86515);
-/* harmony import */ var _angular_material_legacy_input__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/legacy-input */ 60166);
-/* harmony import */ var _angular_material_legacy_list__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/legacy-list */ 39038);
-/* harmony import */ var _angular_material_legacy_core__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/material/legacy-core */ 60773);
-/* harmony import */ var _angular_material_legacy_menu__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/material/legacy-menu */ 10662);
-/* harmony import */ var _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/material/legacy-paginator */ 57796);
-/* harmony import */ var _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/material/legacy-paginator */ 39687);
+/* harmony import */ var _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/grid-list */ 647);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/icon */ 86515);
+/* harmony import */ var _angular_material_legacy_input__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/legacy-input */ 60166);
+/* harmony import */ var _angular_material_legacy_form_field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/legacy-form-field */ 64352);
+/* harmony import */ var _angular_material_legacy_list__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/material/legacy-list */ 39038);
+/* harmony import */ var _angular_material_legacy_core__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/material/legacy-core */ 60773);
+/* harmony import */ var _angular_material_legacy_menu__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/material/legacy-menu */ 10662);
+/* harmony import */ var _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/material/legacy-paginator */ 57796);
+/* harmony import */ var _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! @angular/material/legacy-paginator */ 39687);
 /* harmony import */ var _paginator_paginator_intl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./paginator/paginator-intl */ 94741);
-/* harmony import */ var _angular_material_legacy_progress_bar__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/material/legacy-progress-bar */ 27863);
-/* harmony import */ var _angular_material_legacy_progress_spinner__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/material/legacy-progress-spinner */ 3401);
-/* harmony import */ var _angular_material_legacy_radio__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/material/legacy-radio */ 57404);
-/* harmony import */ var _angular_material_legacy_select__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/material/legacy-select */ 92198);
-/* harmony import */ var _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/material/sidenav */ 31465);
-/* harmony import */ var _angular_material_legacy_slider__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/material/legacy-slider */ 52098);
-/* harmony import */ var _angular_material_legacy_slide_toggle__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/material/legacy-slide-toggle */ 86837);
-/* harmony import */ var _angular_material_legacy_snack_bar__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/material/legacy-snack-bar */ 59074);
-/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/material/sort */ 87963);
-/* harmony import */ var _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/material/legacy-table */ 49000);
-/* harmony import */ var _angular_material_legacy_tabs__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/material/legacy-tabs */ 53101);
-/* harmony import */ var _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/material/toolbar */ 52484);
-/* harmony import */ var _angular_material_legacy_tooltip__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/material/legacy-tooltip */ 62899);
+/* harmony import */ var _angular_material_legacy_progress_bar__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/material/legacy-progress-bar */ 27863);
+/* harmony import */ var _angular_material_legacy_progress_spinner__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/material/legacy-progress-spinner */ 3401);
+/* harmony import */ var _angular_material_legacy_radio__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/material/legacy-radio */ 57404);
+/* harmony import */ var _angular_material_legacy_select__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/material/legacy-select */ 92198);
+/* harmony import */ var _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/material/sidenav */ 31465);
+/* harmony import */ var _angular_material_legacy_slider__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @angular/material/legacy-slider */ 52098);
+/* harmony import */ var _angular_material_legacy_slide_toggle__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/material/legacy-slide-toggle */ 86837);
+/* harmony import */ var _angular_material_legacy_snack_bar__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/material/legacy-snack-bar */ 59074);
+/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @angular/material/sort */ 87963);
+/* harmony import */ var _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @angular/material/legacy-table */ 49000);
+/* harmony import */ var _angular_material_legacy_tabs__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! @angular/material/legacy-tabs */ 53101);
+/* harmony import */ var _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! @angular/material/toolbar */ 52484);
+/* harmony import */ var _angular_material_legacy_tooltip__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! @angular/material/legacy-tooltip */ 62899);
 /* harmony import */ var _angular_material_stepper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/stepper */ 86272);
 /* harmony import */ var _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material-moment-adapter */ 73392);
 /* harmony import */ var _angular_cdk_table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/table */ 70845);
@@ -47715,12 +47796,13 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 
+
 let MaterialModule = class MaterialModule {};
 MaterialModule = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.NgModule)({
-  imports: [_angular_cdk_table__WEBPACK_IMPORTED_MODULE_2__.CdkTableModule, _angular_material_legacy_autocomplete__WEBPACK_IMPORTED_MODULE_3__.MatLegacyAutocompleteModule, _angular_material_legacy_button__WEBPACK_IMPORTED_MODULE_4__.MatLegacyButtonModule, _angular_material_button_toggle__WEBPACK_IMPORTED_MODULE_5__.MatButtonToggleModule, _angular_material_legacy_card__WEBPACK_IMPORTED_MODULE_6__.MatLegacyCardModule, _angular_material_legacy_checkbox__WEBPACK_IMPORTED_MODULE_7__.MatLegacyCheckboxModule, _angular_material_legacy_chips__WEBPACK_IMPORTED_MODULE_8__.MatLegacyChipsModule, _angular_material_stepper__WEBPACK_IMPORTED_MODULE_9__.MatStepperModule, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_10__.MatDatepickerModule, _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_11__.MatMomentDateModule, _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MatLegacyDialogModule, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__.MatExpansionModule, _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_14__.MatGridListModule, _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__.MatIconModule, _angular_material_legacy_input__WEBPACK_IMPORTED_MODULE_16__.MatLegacyInputModule, _angular_material_legacy_list__WEBPACK_IMPORTED_MODULE_17__.MatLegacyListModule, _angular_material_legacy_core__WEBPACK_IMPORTED_MODULE_18__.MatLegacyOptionModule, _angular_material_legacy_menu__WEBPACK_IMPORTED_MODULE_19__.MatLegacyMenuModule, _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_20__.MatLegacyPaginatorModule, _angular_material_legacy_progress_bar__WEBPACK_IMPORTED_MODULE_21__.MatLegacyProgressBarModule, _angular_material_legacy_progress_spinner__WEBPACK_IMPORTED_MODULE_22__.MatLegacyProgressSpinnerModule, _angular_material_legacy_radio__WEBPACK_IMPORTED_MODULE_23__.MatLegacyRadioModule, _angular_material_legacy_select__WEBPACK_IMPORTED_MODULE_24__.MatLegacySelectModule, _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_25__.MatSidenavModule, _angular_material_legacy_slider__WEBPACK_IMPORTED_MODULE_26__.MatLegacySliderModule, _angular_material_legacy_slide_toggle__WEBPACK_IMPORTED_MODULE_27__.MatLegacySlideToggleModule, _angular_material_legacy_snack_bar__WEBPACK_IMPORTED_MODULE_28__.MatLegacySnackBarModule, _angular_material_sort__WEBPACK_IMPORTED_MODULE_29__.MatSortModule, _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_30__.MatLegacyTableModule, _angular_material_legacy_tabs__WEBPACK_IMPORTED_MODULE_31__.MatLegacyTabsModule, _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_32__.MatToolbarModule, _angular_material_legacy_tooltip__WEBPACK_IMPORTED_MODULE_33__.MatLegacyTooltipModule],
-  exports: [_angular_cdk_table__WEBPACK_IMPORTED_MODULE_2__.CdkTableModule, _angular_material_legacy_autocomplete__WEBPACK_IMPORTED_MODULE_3__.MatLegacyAutocompleteModule, _angular_material_legacy_button__WEBPACK_IMPORTED_MODULE_4__.MatLegacyButtonModule, _angular_material_button_toggle__WEBPACK_IMPORTED_MODULE_5__.MatButtonToggleModule, _angular_material_legacy_card__WEBPACK_IMPORTED_MODULE_6__.MatLegacyCardModule, _angular_material_legacy_checkbox__WEBPACK_IMPORTED_MODULE_7__.MatLegacyCheckboxModule, _angular_material_legacy_chips__WEBPACK_IMPORTED_MODULE_8__.MatLegacyChipsModule, _angular_material_stepper__WEBPACK_IMPORTED_MODULE_9__.MatStepperModule, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_10__.MatDatepickerModule, _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_11__.MatMomentDateModule, _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MatLegacyDialogModule, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__.MatExpansionModule, _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_14__.MatGridListModule, _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__.MatIconModule, _angular_material_legacy_input__WEBPACK_IMPORTED_MODULE_16__.MatLegacyInputModule, _angular_material_legacy_core__WEBPACK_IMPORTED_MODULE_18__.MatLegacyOptionModule, _angular_material_legacy_list__WEBPACK_IMPORTED_MODULE_17__.MatLegacyListModule, _angular_material_legacy_menu__WEBPACK_IMPORTED_MODULE_19__.MatLegacyMenuModule, _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_20__.MatLegacyPaginatorModule, _angular_material_legacy_progress_bar__WEBPACK_IMPORTED_MODULE_21__.MatLegacyProgressBarModule, _angular_material_legacy_progress_spinner__WEBPACK_IMPORTED_MODULE_22__.MatLegacyProgressSpinnerModule, _angular_material_legacy_radio__WEBPACK_IMPORTED_MODULE_23__.MatLegacyRadioModule, _angular_material_legacy_select__WEBPACK_IMPORTED_MODULE_24__.MatLegacySelectModule, _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_25__.MatSidenavModule, _angular_material_legacy_slider__WEBPACK_IMPORTED_MODULE_26__.MatLegacySliderModule, _angular_material_legacy_slide_toggle__WEBPACK_IMPORTED_MODULE_27__.MatLegacySlideToggleModule, _angular_material_legacy_snack_bar__WEBPACK_IMPORTED_MODULE_28__.MatLegacySnackBarModule, _angular_material_sort__WEBPACK_IMPORTED_MODULE_29__.MatSortModule, _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_30__.MatLegacyTableModule, _angular_material_legacy_tabs__WEBPACK_IMPORTED_MODULE_31__.MatLegacyTabsModule, _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_32__.MatToolbarModule, _angular_material_legacy_tooltip__WEBPACK_IMPORTED_MODULE_33__.MatLegacyTooltipModule],
+  imports: [_angular_cdk_table__WEBPACK_IMPORTED_MODULE_2__.CdkTableModule, _angular_material_legacy_autocomplete__WEBPACK_IMPORTED_MODULE_3__.MatLegacyAutocompleteModule, _angular_material_legacy_button__WEBPACK_IMPORTED_MODULE_4__.MatLegacyButtonModule, _angular_material_button_toggle__WEBPACK_IMPORTED_MODULE_5__.MatButtonToggleModule, _angular_material_legacy_card__WEBPACK_IMPORTED_MODULE_6__.MatLegacyCardModule, _angular_material_legacy_checkbox__WEBPACK_IMPORTED_MODULE_7__.MatLegacyCheckboxModule, _angular_material_legacy_chips__WEBPACK_IMPORTED_MODULE_8__.MatLegacyChipsModule, _angular_material_stepper__WEBPACK_IMPORTED_MODULE_9__.MatStepperModule, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_10__.MatDatepickerModule, _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_11__.MatMomentDateModule, _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MatLegacyDialogModule, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__.MatExpansionModule, _angular_material_legacy_form_field__WEBPACK_IMPORTED_MODULE_14__.MatLegacyFormFieldModule, _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_15__.MatGridListModule, _angular_material_icon__WEBPACK_IMPORTED_MODULE_16__.MatIconModule, _angular_material_legacy_input__WEBPACK_IMPORTED_MODULE_17__.MatLegacyInputModule, _angular_material_legacy_list__WEBPACK_IMPORTED_MODULE_18__.MatLegacyListModule, _angular_material_legacy_core__WEBPACK_IMPORTED_MODULE_19__.MatLegacyOptionModule, _angular_material_legacy_menu__WEBPACK_IMPORTED_MODULE_20__.MatLegacyMenuModule, _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_21__.MatLegacyPaginatorModule, _angular_material_legacy_progress_bar__WEBPACK_IMPORTED_MODULE_22__.MatLegacyProgressBarModule, _angular_material_legacy_progress_spinner__WEBPACK_IMPORTED_MODULE_23__.MatLegacyProgressSpinnerModule, _angular_material_legacy_radio__WEBPACK_IMPORTED_MODULE_24__.MatLegacyRadioModule, _angular_material_legacy_select__WEBPACK_IMPORTED_MODULE_25__.MatLegacySelectModule, _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_26__.MatSidenavModule, _angular_material_legacy_slider__WEBPACK_IMPORTED_MODULE_27__.MatLegacySliderModule, _angular_material_legacy_slide_toggle__WEBPACK_IMPORTED_MODULE_28__.MatLegacySlideToggleModule, _angular_material_legacy_snack_bar__WEBPACK_IMPORTED_MODULE_29__.MatLegacySnackBarModule, _angular_material_sort__WEBPACK_IMPORTED_MODULE_30__.MatSortModule, _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_31__.MatLegacyTableModule, _angular_material_legacy_tabs__WEBPACK_IMPORTED_MODULE_32__.MatLegacyTabsModule, _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_33__.MatToolbarModule, _angular_material_legacy_tooltip__WEBPACK_IMPORTED_MODULE_34__.MatLegacyTooltipModule],
+  exports: [_angular_cdk_table__WEBPACK_IMPORTED_MODULE_2__.CdkTableModule, _angular_material_legacy_autocomplete__WEBPACK_IMPORTED_MODULE_3__.MatLegacyAutocompleteModule, _angular_material_legacy_button__WEBPACK_IMPORTED_MODULE_4__.MatLegacyButtonModule, _angular_material_button_toggle__WEBPACK_IMPORTED_MODULE_5__.MatButtonToggleModule, _angular_material_legacy_card__WEBPACK_IMPORTED_MODULE_6__.MatLegacyCardModule, _angular_material_legacy_checkbox__WEBPACK_IMPORTED_MODULE_7__.MatLegacyCheckboxModule, _angular_material_legacy_chips__WEBPACK_IMPORTED_MODULE_8__.MatLegacyChipsModule, _angular_material_stepper__WEBPACK_IMPORTED_MODULE_9__.MatStepperModule, _angular_material_datepicker__WEBPACK_IMPORTED_MODULE_10__.MatDatepickerModule, _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_11__.MatMomentDateModule, _angular_material_legacy_dialog__WEBPACK_IMPORTED_MODULE_12__.MatLegacyDialogModule, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_13__.MatExpansionModule, _angular_material_legacy_form_field__WEBPACK_IMPORTED_MODULE_14__.MatLegacyFormFieldModule, _angular_material_grid_list__WEBPACK_IMPORTED_MODULE_15__.MatGridListModule, _angular_material_icon__WEBPACK_IMPORTED_MODULE_16__.MatIconModule, _angular_material_legacy_input__WEBPACK_IMPORTED_MODULE_17__.MatLegacyInputModule, _angular_material_legacy_core__WEBPACK_IMPORTED_MODULE_19__.MatLegacyOptionModule, _angular_material_legacy_list__WEBPACK_IMPORTED_MODULE_18__.MatLegacyListModule, _angular_material_legacy_menu__WEBPACK_IMPORTED_MODULE_20__.MatLegacyMenuModule, _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_21__.MatLegacyPaginatorModule, _angular_material_legacy_progress_bar__WEBPACK_IMPORTED_MODULE_22__.MatLegacyProgressBarModule, _angular_material_legacy_progress_spinner__WEBPACK_IMPORTED_MODULE_23__.MatLegacyProgressSpinnerModule, _angular_material_legacy_radio__WEBPACK_IMPORTED_MODULE_24__.MatLegacyRadioModule, _angular_material_legacy_select__WEBPACK_IMPORTED_MODULE_25__.MatLegacySelectModule, _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_26__.MatSidenavModule, _angular_material_legacy_slider__WEBPACK_IMPORTED_MODULE_27__.MatLegacySliderModule, _angular_material_legacy_slide_toggle__WEBPACK_IMPORTED_MODULE_28__.MatLegacySlideToggleModule, _angular_material_legacy_snack_bar__WEBPACK_IMPORTED_MODULE_29__.MatLegacySnackBarModule, _angular_material_sort__WEBPACK_IMPORTED_MODULE_30__.MatSortModule, _angular_material_legacy_table__WEBPACK_IMPORTED_MODULE_31__.MatLegacyTableModule, _angular_material_legacy_tabs__WEBPACK_IMPORTED_MODULE_32__.MatLegacyTabsModule, _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_33__.MatToolbarModule, _angular_material_legacy_tooltip__WEBPACK_IMPORTED_MODULE_34__.MatLegacyTooltipModule],
   providers: [{
-    provide: _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_34__.MatPaginatorIntl,
+    provide: _angular_material_legacy_paginator__WEBPACK_IMPORTED_MODULE_35__.MatPaginatorIntl,
     useClass: _paginator_paginator_intl__WEBPACK_IMPORTED_MODULE_0__.CustomMatPaginatorIntl
   }]
 })], MaterialModule);
@@ -52126,7 +52208,7 @@ const environment = {
   version: (__webpack_require__(/*! ../../package.json */ 4147).version),
   production: false,
   apiEndpoint: null,
-  apiPort: 1881,
+  apiPort: 1887,
   serverEnabled: true,
   type: null
 };
@@ -63013,7 +63095,7 @@ module.exports = "<div style=\"width: 100%;position: relative;\">\n    <div *ngI
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"container\">\n    <h1 mat-dialog-title class=\"dialog-title\" mat-dialog-draggable>{{'device-tag-dialog-title' | translate}}</h1>\n    <mat-icon (click)=\"onNoClick()\" class=\"dialog-close-btn\">clear</mat-icon>\n    <mat-table #table [dataSource]=\"dataSource\" matSort style=\"height:620px\" class=\"dialog-mdsd-table\">\n        <!-- Checkbox Column -->\n        <ng-container matColumnDef=\"toogle\">\n            <mat-header-cell *matHeaderCellDef style=\"padding-left: 5px;padding-right: 10px;\">\n                <button mat-icon-button (click)=\"onClearSelection()\" class=\"remove\">\n                    <mat-icon>clear</mat-icon>\n                </button>\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\" style=\"padding-left: 15px;\">\n                <mat-checkbox (click)=\"$event.stopPropagation()\" (change)=\"onToogle(element)\" [(ngModel)]=\"element.checked\">\n                </mat-checkbox>\n            </mat-cell>\n        </ng-container>\n        <!-- Name Column -->\n        <ng-container matColumnDef=\"name\">\n            <mat-header-cell *matHeaderCellDef mat-sort-header class=\"my-header-filter\">\n                <span>{{'device.list-name' | translate}}</span>\n                <input (click)=\"$event.stopPropagation()\" [formControl]=\"nameFilter\" style=\"width: 200px\" class=\"my-header-filter-input\" type=\"text\">\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.name}} </mat-cell>\n        </ng-container>\n        <!-- Address Column -->\n        <ng-container matColumnDef=\"address\">\n            <mat-header-cell *matHeaderCellDef mat-sort-header class=\"my-header-filter\">\n                <span>{{'device.list-address' | translate}}</span>\n                <input (click)=\"$event.stopPropagation()\" [formControl]=\"addressFilter\" style=\"width: 360px\" class=\"my-header-filter-input\" type=\"text\">\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.address}} </mat-cell>\n        </ng-container>\n        <!-- Device Column -->\n        <ng-container matColumnDef=\"device\">\n            <mat-header-cell *matHeaderCellDef mat-sort-header class=\"my-header-filter\">\n                <span>{{'device.list-device' | translate}}</span>\n                <input (click)=\"$event.stopPropagation()\" [formControl]=\"deviceFilter\" style=\"width: 200px\" class=\"my-header-filter-input\" type=\"text\">\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.device}} </mat-cell>\n        </ng-container>\n        <!-- Select Column -->\n        <ng-container matColumnDef=\"select\">\n            <mat-header-cell *matHeaderCellDef style=\"padding-right: 0px;\">\n                <button mat-icon-button [matMenuTriggerFor]=\"devicesMenu\" class=\"remove\">\n                    <mat-icon>add_circle_outline</mat-icon>\n                </button>\n                <mat-menu #devicesMenu [overlapTrigger]=\"false\">\n                    <ng-container *ngFor=\"let device of devices\">\n                        <button *ngIf=\"isDeviceTagEditable(device.type)\" mat-menu-item (click)=\"onAddDeviceTag(device)\">{{ device.name }}</button>                        \n                    </ng-container>\n                </mat-menu>\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\" style=\"padding-right: 0px;\">\n                <button mat-icon-button (click)=\"onSelect(element)\">\n                    <mat-icon>check</mat-icon>\n                </button>\n            </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"defColumns\" style=\"min-height: 30px;\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: defColumns;\"></mat-row>\n    </mat-table>\n    <mat-paginator [pageSizeOptions]=\"[10, 25, 100]\" [pageSize]=\"25\" style=\"float: left;\"></mat-paginator>\n\n    <div mat-dialog-actions class=\"dialog-action\" style=\"padding-top: 30px;\">\n        <button mat-raised-button (click)=\"onNoClick()\" cdkFocusInitial>{{'dlg.cancel' | translate}}</button>\n        <button mat-raised-button color=\"primary\" (click)=\"onOkClick()\">{{'dlg.ok' | translate}}</button>\n    </div>\n</div>";
+module.exports = "<div class=\"container\">\n    <h1 mat-dialog-title class=\"dialog-title\" mat-dialog-draggable>{{'device-tag-dialog-title' | translate}}</h1>\n    <mat-icon (click)=\"onNoClick()\" class=\"dialog-close-btn\">clear</mat-icon>\n    \n    <!-- GDT Tags Search -->\n    <div style=\"padding: 10px 0; display: flex; align-items: center; gap: 10px;\">\n        <mat-form-field style=\"flex: 1; max-width: 400px;\">\n            <mat-label>Buscar tags de GDT</mat-label>\n            <input matInput [formControl]=\"tbDeviceSearchFilter\" placeholder=\"Nombre del tag...\">\n            <mat-icon matSuffix>search</mat-icon>\n        </mat-form-field>\n        <button mat-raised-button \n                color=\"accent\" \n                (click)=\"loadMoreThingsBoardDevices()\" \n                [disabled]=\"!tbHasNext || isLoadingTbDevices\"\n                style=\"height: 40px;\">\n            <mat-icon *ngIf=\"!isLoadingTbDevices\">expand_more</mat-icon>\n            <mat-spinner *ngIf=\"isLoadingTbDevices\" diameter=\"20\" style=\"display: inline-block;\"></mat-spinner>\n            {{ isLoadingTbDevices ? 'Cargando...' : 'Cargar más tags GDT' }}\n        </button>\n        <span *ngIf=\"tbTotalPages > 0\" style=\"color: #666; font-size: 12px;\">\n            Página {{tbCurrentPage + 1}} de {{tbTotalPages}}\n        </span>\n    </div>\n    \n    <mat-table #table [dataSource]=\"dataSource\" matSort style=\"height:620px\" class=\"dialog-mdsd-table\">\n        <!-- Checkbox Column -->\n        <ng-container matColumnDef=\"toogle\">\n            <mat-header-cell *matHeaderCellDef style=\"padding-left: 5px;padding-right: 10px;\">\n                <button mat-icon-button (click)=\"onClearSelection()\" class=\"remove\">\n                    <mat-icon>clear</mat-icon>\n                </button>\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\" style=\"padding-left: 15px;\">\n                <mat-checkbox (click)=\"$event.stopPropagation()\" (change)=\"onToogle(element)\" [(ngModel)]=\"element.checked\">\n                </mat-checkbox>\n            </mat-cell>\n        </ng-container>\n        <!-- Name Column -->\n        <ng-container matColumnDef=\"name\">\n            <mat-header-cell *matHeaderCellDef mat-sort-header class=\"my-header-filter\">\n                <span>{{'device.list-name' | translate}}</span>\n                <input (click)=\"$event.stopPropagation()\" [formControl]=\"nameFilter\" style=\"width: 200px\" class=\"my-header-filter-input\" type=\"text\">\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.name}} </mat-cell>\n        </ng-container>\n        <!-- Address Column -->\n        <ng-container matColumnDef=\"address\">\n            <mat-header-cell *matHeaderCellDef mat-sort-header class=\"my-header-filter\">\n                <span>{{'device.list-address' | translate}}</span>\n                <input (click)=\"$event.stopPropagation()\" [formControl]=\"addressFilter\" style=\"width: 360px\" class=\"my-header-filter-input\" type=\"text\">\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.address}} </mat-cell>\n        </ng-container>\n        <!-- Device Column -->\n        <ng-container matColumnDef=\"device\">\n            <mat-header-cell *matHeaderCellDef mat-sort-header class=\"my-header-filter\">\n                <span>{{'device.list-device' | translate}}</span>\n                <input (click)=\"$event.stopPropagation()\" [formControl]=\"deviceFilter\" style=\"width: 200px\" class=\"my-header-filter-input\" type=\"text\">\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\"> {{element.device}} </mat-cell>\n        </ng-container>\n        <!-- Select Column -->\n        <ng-container matColumnDef=\"select\">\n            <mat-header-cell *matHeaderCellDef style=\"padding-right: 0px;\">\n                <button mat-icon-button [matMenuTriggerFor]=\"devicesMenu\" class=\"remove\">\n                    <mat-icon>add_circle_outline</mat-icon>\n                </button>\n                <mat-menu #devicesMenu [overlapTrigger]=\"false\">\n                    <ng-container *ngFor=\"let device of devices\">\n                        <button *ngIf=\"isDeviceTagEditable(device.type)\" mat-menu-item (click)=\"onAddDeviceTag(device)\">{{ device.name }}</button>                        \n                    </ng-container>\n                </mat-menu>\n            </mat-header-cell>\n            <mat-cell *matCellDef=\"let element\" style=\"padding-right: 0px;\">\n                <button mat-icon-button (click)=\"onSelect(element)\">\n                    <mat-icon>check</mat-icon>\n                </button>\n            </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"defColumns\" style=\"min-height: 30px;\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: defColumns;\"></mat-row>\n    </mat-table>\n    <mat-paginator [pageSizeOptions]=\"[10, 25, 100]\" [pageSize]=\"25\" style=\"float: left;\"></mat-paginator>\n\n    <div mat-dialog-actions class=\"dialog-action\" style=\"padding-top: 30px;\">\n        <button mat-raised-button (click)=\"onNoClick()\" cdkFocusInitial>{{'dlg.cancel' | translate}}</button>\n        <button mat-raised-button color=\"primary\" (click)=\"onOkClick()\">{{'dlg.ok' | translate}}</button>\n    </div>\n</div>";
 
 /***/ }),
 

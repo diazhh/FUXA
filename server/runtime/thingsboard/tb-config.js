@@ -94,11 +94,11 @@ class ThingsBoardConfig {
     async setDefault() {
         const defaultConfig = {
             enabled: true,
-            host: '192.168.31.113',
-            port: 8081,
+            host: 'localhost',
+            port: 8080,
             protocol: 'http',
-            username: 'tenant@thingsboard.org',
-            password: 'tenant',
+            username: 'master@gdt.com',
+            password: '10203040',
             syncInterval: 30000,
             useWebSocket: true,
             reconnectInterval: 5000,

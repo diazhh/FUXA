@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatLegacyTable as MatTable, MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Device, DeviceType, TAG_PREFIX, Tag } from '../../_models/device';
 import { ProjectService } from '../../_services/project.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, debounceTime } from 'rxjs';
 import { Utils } from '../../_helpers/utils';
 import { TagPropertyService } from '../tag-property/tag-property.service';
 import { HttpClient } from '@angular/common/http';
@@ -28,11 +28,21 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
     nameFilter = new UntypedFormControl();
     addressFilter = new UntypedFormControl();
     deviceFilter = new UntypedFormControl();
+    tbDeviceSearchFilter = new UntypedFormControl();
     tags: TagElement[] = [];
     devices: Device[] = [];
     filteredValues = {
         name: '', address: '', device: ''
     };
+    
+    // ThingsBoard pagination state
+    tbCurrentPage = 0;
+    tbPageSize = 50;
+    tbTotalPages = 0;
+    tbHasNext = false;
+    tbSearchText = '';
+    tbLoadedDevices = new Map<string, any>();
+    isLoadingTbDevices = false;
 
     readonly defColumns = ['toogle', 'name', 'address', 'device', 'select'];
     deviceTagNotEditable = [DeviceType.MQTTclient, DeviceType.ODBC];
@@ -66,6 +76,21 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
             this.filteredValues['device'] = deviceFilterValue;
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         });
+        
+        // ThingsBoard device search with debounce
+        this.tbDeviceSearchFilter.valueChanges.pipe(
+            takeUntil(this.destroy$),
+            debounceTime(500)
+        ).subscribe((searchValue) => {
+            this.tbSearchText = searchValue || '';
+            this.tbCurrentPage = 0;
+            this.tbLoadedDevices.clear();
+            // Remove existing GDT tags before searching
+            this.tags = this.tags.filter(tag => !tag.device.startsWith('GDT:'));
+            this.dataSource.data = this.tags;
+            this.loadThingsBoardDevices();
+        });
+        
         this.dataSource.filterPredicate = this.customFilterPredicate();
     }
 
@@ -222,45 +247,8 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
             });
         }
         
-        // Load tags from ThingsBoard devices (on-demand query)
-        try {
-            const tbDevices: any[] = await this.http.get<any[]>('/api/thingsboard/devices').toPromise();
-            console.log('ThingsBoard devices loaded:', tbDevices);
-            
-            if (tbDevices && tbDevices.length > 0) {
-                // For each ThingsBoard device, fetch its telemetry keys
-                for (const tbDevice of tbDevices) {
-                    const deviceId = tbDevice.id?.id || tbDevice.id;
-                    const deviceName = tbDevice.name;
-                    
-                    console.log(`Loading telemetry keys for device: ${deviceName} (${deviceId})`);
-                    
-                    try {
-                        const keys: string[] = await this.http.get<string[]>(`/api/thingsboard/device/${deviceId}/keys`).toPromise();
-                        console.log(`Telemetry keys for ${deviceName}:`, keys);
-                        
-                        if (keys && keys.length > 0) {
-                            // Create a tag for each telemetry key
-                            keys.forEach((key: string) => {
-                                const tagId = `tb:${deviceId}:${key}`;
-                                this.tags.push(<TagElement> {
-                                    id: tagId,
-                                    name: key,
-                                    address: deviceId,
-                                    device: `TB:${deviceName}`,
-                                    checked: (tagId === this.data.variableId),
-                                    error: null
-                                });
-                            });
-                        }
-                    } catch (err) {
-                        console.error(`Failed to load telemetry keys for device ${deviceName}:`, err);
-                    }
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load ThingsBoard devices:', err);
-        }
+        // Load first page of ThingsBoard devices with pagination
+        await this.loadThingsBoardDevices();
         
         console.log('Total tags loaded:', this.tags.length);
         
@@ -271,6 +259,116 @@ export class DeviceTagSelectionComponent implements OnInit, AfterViewInit, OnDes
         if (newTag && deviceName) {
             this.onSelect(<TagElement>{ id: newTag.id }, deviceName);
         }
+    }
+    
+    /**
+     * Load ThingsBoard devices with pagination and search
+     */
+    private async loadThingsBoardDevices() {
+        if (this.isLoadingTbDevices) {
+            return;
+        }
+        
+        try {
+            this.isLoadingTbDevices = true;
+            
+            const response: any = await this.http.get('/api/thingsboard/devices', {
+                params: {
+                    pageSize: this.tbPageSize.toString(),
+                    page: this.tbCurrentPage.toString(),
+                    searchText: this.tbSearchText
+                }
+            }).toPromise();
+            
+            console.log('ThingsBoard devices page loaded:', response);
+            console.log('Response data:', response?.data);
+            console.log('Response data length:', response?.data?.length);
+            
+            // Update pagination info even if no data
+            this.tbTotalPages = response?.totalPages || 0;
+            this.tbHasNext = response?.hasNext || false;
+            
+            if (response && response.data && response.data.length > 0) {
+                console.log(`TB Pagination: page ${this.tbCurrentPage + 1}/${this.tbTotalPages}, hasNext: ${this.tbHasNext}`);
+                
+                // Filter only new devices
+                const newDevices = response.data.filter(tbDevice => {
+                    const deviceId = tbDevice.id?.id || tbDevice.id;
+                    return !this.tbLoadedDevices.has(deviceId);
+                });
+                
+                console.log(`Loading telemetry keys for ${newDevices.length} new devices in parallel...`);
+                
+                // Load telemetry keys for all new devices in parallel
+                const devicePromises = newDevices.map((tbDevice) => {
+                    const deviceId = tbDevice.id?.id || tbDevice.id;
+                    const deviceName = tbDevice.name;
+                    
+                    this.tbLoadedDevices.set(deviceId, tbDevice);
+                    
+                    return this.http.get<string[]>(`/api/thingsboard/device/${deviceId}/keys`).toPromise()
+                        .then((keys: string[]) => {
+                            if (keys && keys.length > 0) {
+                                // Filter keys by search text if provided
+                                let filteredKeys = keys;
+                                if (this.tbSearchText && this.tbSearchText.trim() !== '') {
+                                    const searchLower = this.tbSearchText.toLowerCase();
+                                    filteredKeys = keys.filter(key => 
+                                        key.toLowerCase().includes(searchLower) || 
+                                        deviceName.toLowerCase().includes(searchLower)
+                                    );
+                                }
+                                
+                                // Create tags for filtered keys
+                                return filteredKeys.map((key: string) => ({
+                                    id: `tb:${deviceId}:${key}`,
+                                    name: key,
+                                    address: deviceId,
+                                    device: `GDT:${deviceName}`,
+                                    checked: (`tb:${deviceId}:${key}` === this.data.variableId),
+                                    error: null
+                                }));
+                            }
+                            return [];
+                        })
+                        .catch((err) => {
+                            console.error(`Failed to load telemetry keys for device ${deviceName}:`, err);
+                            return [];
+                        });
+                });
+                
+                // Wait for all devices to load in parallel
+                const deviceTagsArrays = await Promise.all(devicePromises);
+                
+                // Flatten and add all tags
+                const newTags = [].concat(...deviceTagsArrays);
+                this.tags.push(...newTags);
+                
+                console.log(`Loaded ${newTags.length} new tags from ${newDevices.length} devices`);
+                console.log(`Total tags: ${this.tags.length}`);
+                
+                // Update table data
+                this.dataSource.data = this.tags;
+            } else {
+                console.log('No ThingsBoard devices found in response');
+            }
+        } catch (err) {
+            console.error('Failed to load ThingsBoard devices:', err);
+        } finally {
+            this.isLoadingTbDevices = false;
+        }
+    }
+    
+    /**
+     * Load next page of ThingsBoard devices
+     */
+    async loadMoreThingsBoardDevices() {
+        if (!this.tbHasNext || this.isLoadingTbDevices) {
+            return;
+        }
+        
+        this.tbCurrentPage++;
+        await this.loadThingsBoardDevices();
     }
 }
 

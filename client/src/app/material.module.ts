@@ -12,6 +12,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
@@ -49,6 +50,7 @@ import { CdkTableModule } from '@angular/cdk/table';
         MatMomentDateModule,
         MatDialogModule,
         MatExpansionModule,
+        MatFormFieldModule,
         MatGridListModule,
         MatIconModule,
         MatInputModule,
@@ -83,6 +85,7 @@ import { CdkTableModule } from '@angular/cdk/table';
         MatMomentDateModule,
         MatDialogModule,
         MatExpansionModule,
+        MatFormFieldModule,
         MatGridListModule,
         MatIconModule,
         MatInputModule,

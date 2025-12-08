@@ -117,7 +117,7 @@ function app() {
     });
 
     /**
-     * GET ThingsBoard devices (on-demand query)
+     * GET ThingsBoard devices (on-demand query with pagination and search)
      */
     tbApp.get('/api/thingsboard/devices', secureFnc, async function(req, res) {
         const permission = checkGroupsFnc(req);
@@ -129,13 +129,18 @@ function app() {
         } else {
             try {
                 if (!runtime.thingsboard || !runtime.thingsboard.isEnabled()) {
-                    res.json([]);
+                    res.json({data: [], totalPages: 0, totalElements: 0, hasNext: false});
                     return;
                 }
 
+                // Get pagination parameters
+                const pageSize = parseInt(req.query.pageSize) || 50;
+                const page = parseInt(req.query.page) || 0;
+                const searchText = req.query.searchText || '';
+
                 // Query devices directly from ThingsBoard
-                const devices = await runtime.thingsboard.getDevices();
-                res.json(devices);
+                const result = await runtime.thingsboard.getDevices(pageSize, page, searchText);
+                res.json(result);
             } catch (err) {
                 res.status(500).json({error: 'server_error', message: err.message});
                 runtime.logger.error(`api get thingsboard devices: ${err.message}`);
