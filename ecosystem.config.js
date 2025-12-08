@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: 'fuxa-root',
+      name: 'fuxa-proyectos',
       script: 'main.js',
-      cwd: '/var/FUXA/server',
+      cwd: '/var/proyectos/FUXA/server',
       instances: 1,
       exec_mode: 'fork',
       autorestart: true,
